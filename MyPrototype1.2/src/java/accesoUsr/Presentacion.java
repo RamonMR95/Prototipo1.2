@@ -1,8 +1,8 @@
 /** Proyecto: Juego de la vida.
  *  Implementa el concepto de Presentacion del accesoUsr  
- *  @since: prototipo1.1
+ *  @since: prototipo1.2
  *  @source: Presentacion.java 
- *  @version: 1.1 - 2019/01/22 
+ *  @version: 1.2 - 2019/01/22 
  *  @author: Ramon Moñino
  */
 package accesoUsr;
@@ -40,12 +40,12 @@ public class Presentacion {
 		int intentosPermitidos = MAX_INTENTOS_FALLIDOS;
 
 		do {
-			System.out.print("Introduce el nif de usuario: \n");
-			Nif nif = new Nif(teclado.nextLine());
+			System.out.print("Introduce el ID de usuario: \n");
+			String id = teclado.nextLine();
 			System.out.print("Introduce clave acceso: ");
 			ClaveAcceso clave = new ClaveAcceso(teclado.nextLine());
 
-			usrEnSesion = datos.buscarUsuario(nif);
+			usrEnSesion = datos.buscarUsuario(id);
 
 			Usuario aux = new Usuario();
 			aux.setClaveAcceso(new ClaveAcceso(clave));

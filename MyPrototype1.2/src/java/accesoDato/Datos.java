@@ -1,8 +1,8 @@
 /** Proyecto: Juego de la vida.
  *  Implementa el concepto de Datos del accesoDato  
- *  @since: prototipo1.1
+ *  @since: prototipo1.2
  *  @source: Datos.java 
- *  @version: 1.1 - 2019/01/22 
+ *  @version: 1.2 - 2019/01/22 
  *  @author: Ramon Moñino
  */
 
@@ -59,9 +59,9 @@ public class Datos {
 	 * @param idUsr - el nif del Usuario a buscar.
 	 * @return - el Usuario encontrado o null si no existe.
 	 */
-	public Usuario buscarUsuario(Nif idUsr) {
+	public Usuario buscarUsuario(String idUsr) {
 		for (Usuario usr : datosUsuarios) {
-			if (usr.getNif().equals(idUsr)) {
+			if (usr.getIdUsr().equals(idUsr)) {
 				return usr;
 			}
 		}
@@ -82,7 +82,7 @@ public class Datos {
 	 * @param usr
 	 */
 	public void altaUsuario(Usuario usr) {
-		if(buscarUsuario(usr.getNif()) == null) {
+		if(buscarUsuario(usr.getIdUsr()) == null) {
 			datosUsuarios.add(usr);
 		}
 	}

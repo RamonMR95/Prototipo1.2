@@ -7,9 +7,9 @@ package modelo;
  *  	- Obsesión por los tipos primitivos.
  *  	- Clase demasiado grande.
  *  	- Clase acaparadora, que delega poca responsabilidad.  
- * @since: prototipo1.1
+ * @since: prototipo1.2
  * @source: Simulacion.java 
- * @version: 1.1 - 2018.11.21
+ * @version: 1.2 - 2018.11.21
  * @author: Ramon Moñino
  */
 

@@ -8,9 +8,9 @@ Proyecto: Juego de la vida.
  *      - Exceso de métodos estáticos.
  *  	- Clase acaparadora, que delega poca responsabilidad. 
  *  	- Clase demasiado grande.
- * @since: prototipo1.1
+ * @since: prototipo1.2
  * @source: JVPrincipal.java 
- * @version: 1.1 - 2019-02-01
+ * @version: 1.2 - 2019-02-01
  * @author: Ramon Moñino
  */
 

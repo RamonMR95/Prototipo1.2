@@ -1,8 +1,8 @@
 /** Proyecto: Juego de la vida.
  *  Implementa el concepto de SesionUsuario del modelo  
- *  @since: prototipo1.1
+ *  @since: prototipo1.2
  *  @source: SesionUsuario.java 
- *  @version: 1.1 - 2019/01/22 
+ *  @version: 1.2 - 2019/01/22 
  *  @author: Ramon Moñino
  */
 package modelo;
