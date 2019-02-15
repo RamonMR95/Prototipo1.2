@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 import accesoDato.Datos;
 import modelo.ClaveAcceso;
-import modelo.Nif;
 import modelo.Simulacion;
 import modelo.Usuario;
 
@@ -45,7 +44,7 @@ public class Presentacion {
 			System.out.print("Introduce clave acceso: ");
 			ClaveAcceso clave = new ClaveAcceso(teclado.nextLine());
 
-			usrEnSesion = datos.buscarUsuario(id);
+			usrEnSesion = datos.buscarBinaria(id);
 
 			Usuario aux = new Usuario();
 			aux.setClaveAcceso(new ClaveAcceso(clave));

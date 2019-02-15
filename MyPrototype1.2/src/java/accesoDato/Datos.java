@@ -59,11 +59,25 @@ public class Datos {
 	 * @param idUsr - el nif del Usuario a buscar.
 	 * @return - el Usuario encontrado o null si no existe.
 	 */
-	public Usuario buscarUsuario(String idUsr) {
-		for (Usuario usr : datosUsuarios) {
-			if (usr.getIdUsr().equals(idUsr)) {
-				return usr;
+	public Usuario buscarBinaria(String idUsr) {
+		int size = datosUsuarios.size();
+		int centro;
+		int limiteInferior = 0;
+		int limiteSuperior = size - 1;
+
+		while (limiteInferior <= limiteSuperior) {
+			centro = (limiteSuperior + limiteInferior) / 2;
+
+			if (datosUsuarios.get(centro).getIdUsr().equals(idUsr)) {
+				return datosUsuarios.get(centro);
+				
+			} else if (idUsr.compareTo(datosUsuarios.get(centro).getIdUsr()) < 0) {
+				limiteSuperior = centro - 1;
+				
+			} else {
+				limiteInferior = centro + 1;
 			}
+
 		}
 		return null;
 	}
@@ -82,7 +96,7 @@ public class Datos {
 	 * @param usr
 	 */
 	public void altaUsuario(Usuario usr) {
-		if(buscarUsuario(usr.getIdUsr()) == null) {
+		if(buscarBinaria(usr.getIdUsr()) == null) {
 			datosUsuarios.add(usr);
 		}
 	}
