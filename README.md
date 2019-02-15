@@ -1,4 +1,4 @@
-# MyPrototipe1.2 :computer:
+# MyPrototype1.2 :computer:
 
 ## Práctica de aplicación
 
