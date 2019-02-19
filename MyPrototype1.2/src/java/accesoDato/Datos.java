@@ -59,7 +59,7 @@ public class Datos {
 	 * @param idUsr - el nif del Usuario a buscar.
 	 * @return - el Usuario encontrado o null si no existe.
 	 */
-	public Usuario buscarBinaria(String idUsr) {
+	public int indexSort(String idUsr) {
 		int size = datosUsuarios.size();
 		int centro;
 		int limiteInferior = 0;
@@ -67,21 +67,24 @@ public class Datos {
 
 		while (limiteInferior <= limiteSuperior) {
 			centro = (limiteSuperior + limiteInferior) / 2;
+			int comparacion = datosUsuarios.get(centro).getIdUsr().compareTo(idUsr);
 
-			if (datosUsuarios.get(centro).getIdUsr().equals(idUsr)) {
-				return datosUsuarios.get(centro);
-				
-			} else if (idUsr.compareTo(datosUsuarios.get(centro).getIdUsr()) < 0) {
+			if (comparacion == 0) {
+				return centro;
+			}
+
+			if (comparacion > 0) {
 				limiteSuperior = centro - 1;
-				
+
 			} else {
 				limiteInferior = centro + 1;
 			}
 
 		}
-		return null;
+		return -1;
 	}
 
+	
 	/**
 	 * Metodo que registra la sesion en el almacen de sesiones del programa.
 	 * @param sesion
@@ -96,8 +99,11 @@ public class Datos {
 	 * @param usr
 	 */
 	public void altaUsuario(Usuario usr) {
-		if(buscarBinaria(usr.getIdUsr()) == null) {
-			datosUsuarios.add(usr);
+		assert usr != null;
+		int indice = indexSort(usr.getIdUsr());
+		
+		if (indice < 0) {
+			datosUsuarios.add(-indice, usr);
 		}
 	}
 	
