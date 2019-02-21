@@ -44,7 +44,7 @@ public class Presentacion {
 			System.out.print("Introduce clave acceso: ");
 			ClaveAcceso clave = new ClaveAcceso(teclado.nextLine());
 
-			usrEnSesion = datos.buscarBinaria(id);
+			usrEnSesion = datos.buscarUsuario(datos.getEquivalenciaId(id));
 
 			Usuario aux = new Usuario();
 			aux.setClaveAcceso(new ClaveAcceso(clave));
@@ -69,7 +69,6 @@ public class Presentacion {
 	 */
 
 	public void mostrarMundo(Simulacion simulacion) {
-
 		for (int i = 0; i < Simulacion.getTamañoMundo(); i++) {
 			for (int j = 0; j < Simulacion.getTamañoMundo(); j++) {
 				System.out.print((simulacion.getMundo()[i][j] == 1) ? "|o" : "| ");

@@ -188,7 +188,7 @@ public class Usuario {
 		String[]divApellidos = this.apellidos.split("\\s+");
 		id.append(divApellidos[0].substring(0, 1).toUpperCase());
 		id.append(divApellidos[1].substring(0, 1).toUpperCase());
-		id.append(this.nif.getnif().substring(7, 9));
+		id.append(this.nif.getNifTexto().substring(7, 9));
 		return id.toString();
 	}
 

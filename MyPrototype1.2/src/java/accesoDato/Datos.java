@@ -9,6 +9,8 @@
 package accesoDato;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import modelo.*;
 import modelo.Usuario.RolUsuario;
 import util.Fecha;
@@ -20,7 +22,18 @@ public class Datos {
 	private static ArrayList<Usuario> datosUsuarios = new ArrayList<Usuario>();
 	private static ArrayList<SesionUsuario> datosSesiones = new ArrayList<SesionUsuario>();
 	private static ArrayList<Simulacion> datosSimulaciones = new ArrayList<Simulacion>();
-
+	private static HashMap<String, String> mapaEquivalencias = new HashMap<String, String>(); 
+	
+	
+	/**
+	 * 
+	 * @param clave
+	 * @return
+	 */
+	public String getEquivalenciaId(String clave) {
+		return mapaEquivalencias.get(clave);
+	}
+	
 	/**
 	 * Metodo get que obtiene el número de usuarios registrados.
 	 * @return Numero de Usuarios
@@ -49,8 +62,8 @@ public class Datos {
 	 * Metodo que muestra todos los Usuarios.
 	 */
 	public void mostrarTodosUsuarios() {
-		for (Usuario u : datosUsuarios) {
-			System.out.println("\n" + u);
+		for (Usuario usr : datosUsuarios) {
+			System.out.println("\n" + usr);
 		}
 	}
 
@@ -61,29 +74,42 @@ public class Datos {
 	 */
 	public int indexSort(String idUsr) {
 		int size = datosUsuarios.size();
-		int centro;
+		int puntoMedio;
 		int limiteInferior = 0;
 		int limiteSuperior = size - 1;
-
+		
 		while (limiteInferior <= limiteSuperior) {
-			centro = (limiteSuperior + limiteInferior) / 2;
-			int comparacion = datosUsuarios.get(centro).getIdUsr().compareTo(idUsr);
+			puntoMedio = (limiteSuperior + limiteInferior) / 2;
+			int comparacion = idUsr.compareTo(datosUsuarios.get(puntoMedio).getIdUsr());
 
 			if (comparacion == 0) {
-				return centro;
+				return puntoMedio + 1;
 			}
 
 			if (comparacion > 0) {
-				limiteSuperior = centro - 1;
+				limiteInferior = puntoMedio + 1;
 
 			} else {
-				limiteInferior = centro + 1;
+				limiteSuperior = puntoMedio - 1;
 			}
 
 		}
-		return -1;
+		return -(limiteInferior + 1);
 	}
-
+	
+	/**
+	 * 
+	 * @param idUsr
+	 * @return
+	 */
+	public Usuario buscarUsuario(String idUsr) {
+		int indice = indexSort(idUsr) - 1;
+		
+		if (indice < 0) {
+			mapaEquivalencias.get(idUsr);
+		}
+		return datosUsuarios.get(indexSort(idUsr) - 1); // indexSort() es base 1
+	}
 	
 	/**
 	 * Metodo que registra la sesion en el almacen de sesiones del programa.
@@ -94,16 +120,23 @@ public class Datos {
 		
 	}
 	
+	
 	/**
 	 * Metodo que registra el usuario en el almacen de usuarios
 	 * @param usr
 	 */
 	public void altaUsuario(Usuario usr) {
 		assert usr != null;
-		int indice = indexSort(usr.getIdUsr());
+		int posicionInsercion = indexSort(usr.getIdUsr());
 		
-		if (indice < 0) {
-			datosUsuarios.add(-indice, usr);
+		if (posicionInsercion < 0) {
+			datosUsuarios.add(-posicionInsercion -1, usr);
+			registrarEquivalencias(usr);
+			
+		} else {
+			// Coincidencia de id
+			
+			// Error usr repetido
 		}
 	}
 	
@@ -141,7 +174,7 @@ public class Datos {
 
 		for (Usuario usr : datosUsuarios) {
 			sb.append(delimitadorUsrApertura);
-			sb.append(delimitadorAtribUsrApertura).append(usr.getNif().getnif()).append(delimitadorAtribUsrCierre);
+			sb.append(delimitadorAtribUsrApertura).append(usr.getNif().getNifTexto()).append(delimitadorAtribUsrCierre);
 			sb.append(delimitadorAtribUsrApertura).append(usr.getNombre()).append(delimitadorAtribUsrCierre);
 			sb.append(delimitadorAtribUsrApertura).append(usr.getApellidos()).append(delimitadorAtribUsrCierre);
 			sb.append(delimitadorAtribUsrApertura).append(usr.getDireccionPostal().toString()).append(delimitadorAtribUsrCierre);
@@ -176,5 +209,10 @@ public class Datos {
 		}
 		return sb.toString();
 	}
-
+	
+	private void registrarEquivalencias(Usuario usr) {
+		mapaEquivalencias.put(usr.getNif().getNifTexto(), usr.getIdUsr());
+		mapaEquivalencias.put(usr.getCorreo().getCorreoTexto(), usr.getIdUsr());
+		mapaEquivalencias.put(usr.getIdUsr(), usr.getIdUsr());
+	}
 }	// Class

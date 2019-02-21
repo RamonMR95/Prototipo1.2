@@ -40,7 +40,7 @@ public class Nif {
 	 * Metodo get que obtiene la cadena de texto que forma el DNI
 	 * @return texto
 	 */
-	public String getnif() {
+	public String getNifTexto() {
 		return texto;
 	}
 
