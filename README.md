@@ -77,3 +77,6 @@ Una vez completados todos los ejercicios y apartados entrega el código fuente d
 - Hay que comprobar que la documentación interna del código fuente está actualizada y es correcta. 
 
 - Sólo hay que entregar código fuente. No el resto del proyecto de Eclipse.
+
+## UML
+![alt_text](https://github.com/RamonMR95/MyPrototype1.2/blob/master/img/modelo1.2-Dise%C3%B1oClases%20(ControlarAcceso)(Simulacion).jpg)
