@@ -28,7 +28,7 @@ import util.Fecha;
 public class SimulacionTest {
 	private static Usuario usr;
 	private static Fecha fecha;
-	private static byte[][] espacioMundo;
+	private static Mundo mundo;
 	private static Simulacion simulacion1;
 	private Simulacion simulacion2;
 

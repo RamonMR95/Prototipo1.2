@@ -23,6 +23,7 @@ public class Datos {
 	private static ArrayList<SesionUsuario> datosSesiones = new ArrayList<SesionUsuario>();
 	private static ArrayList<Simulacion> datosSimulaciones = new ArrayList<Simulacion>();
 	private static HashMap<String, String> mapaEquivalencias = new HashMap<String, String>(); 
+	private static ArrayList<Mundo> datosMundo = new ArrayList<Mundo>();
 	
 	
 	/**

@@ -46,7 +46,7 @@ public class Usuario {
 		setNif(nif);
 		setNombre(nombre);
 		setApellidos(apellidos);
-		setIdUsr();
+		generarIdUsr();
 		setDireccionPostal(direccionPostal);
 		setCorreo(correo);
 		setFechaNacimiento(fechaNacimiento);
@@ -69,6 +69,7 @@ public class Usuario {
 	 */
 	public Usuario(Usuario usr) {
 		this.nif = new Nif(usr.nif);
+		this.idUsr = new String(usr.idUsr);
 		this.nombre = new String(usr.nombre);
 		this.apellidos = new String(usr.apellidos);
 		this.direccionPostal = new DireccionPostal(usr.direccionPostal);
@@ -168,15 +169,7 @@ public class Usuario {
 	public String getIdUsr() {
 		return idUsr;
 	}
-	
-	/**
-	 * Metodo que establece el idUsr
-	 * @param idUsr
-	 */
-	public void setIdUsr() {
-		this.idUsr = generarIdUsr();
-	}
-	
+
 	/**
 	 * Metodo que genera un ID de usuario
 	 * @param idUsr
@@ -189,7 +182,17 @@ public class Usuario {
 		id.append(divApellidos[0].substring(0, 1).toUpperCase());
 		id.append(divApellidos[1].substring(0, 1).toUpperCase());
 		id.append(this.nif.getNifTexto().substring(7, 9));
+		this.idUsr = id.toString();
 		return id.toString();
+	}
+
+	/**
+	 * 
+	 */
+	public void generarVarianteIdUsr() {
+		String alfabetoNif = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		String alfabetoDesplazado = "BCDEFGHIJKLMNOPQRSTUVWXYZA";
+		this.idUsr = this.idUsr.substring(0, 4) + alfabetoDesplazado.charAt(alfabetoNif.indexOf(idUsr.charAt(4)));
 	}
 
 	/**

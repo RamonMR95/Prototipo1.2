@@ -21,6 +21,7 @@ public class Presentacion {
 	private static Usuario usrEnSesion;
 	private static final int MAX_INTENTOS_FALLIDOS = 3;
 	private static Datos datos = new Datos();
+	private Simulacion simulacion = new Simulacion();
 
 	/**
 	 * Metodo get que obtiene el usuario que se encuentra en sesion.
@@ -68,10 +69,11 @@ public class Presentacion {
 	 * del Juego de la vida.
 	 */
 
-	public void mostrarMundo(Simulacion simulacion) {
-		for (int i = 0; i < Simulacion.getTamañoMundo(); i++) {
-			for (int j = 0; j < Simulacion.getTamañoMundo(); j++) {
-				System.out.print((simulacion.getMundo()[i][j] == 1) ? "|o" : "| ");
+	public void mostrarSimulacion() {
+		
+		for (int i = 0; i < simulacion.getMundo().getEspacio().length; i++) {
+			for (int j = 0; j < simulacion.getMundo().getEspacio().length; j++) {
+				System.out.print((simulacion.getMundo().getEspacio()[i][j] == 1) ? "|o" : "| ");
 			}
 			System.out.println("|");
 		}
