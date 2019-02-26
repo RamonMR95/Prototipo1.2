@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.sun.tools.javac.code.Attribute.Array;
+
 
 public class Mundo {
 	private String nombre;
@@ -25,6 +27,14 @@ public class Mundo {
 	public Mundo() {
 		this("Demo", crearMundoDemo(), new LinkedList<Posicion>(), new HashMap<String, int[]>());
 		leyesEstandar();
+	}
+	
+	// TODO Terminar constructor copia
+	public Mundo(Mundo mundo) {
+		this.espacio = System.arraycopy(mundo.espacio, 0, espacio, 0, espacio.length);
+		this.nombre = mundo.nombre;
+		this.distribucion = mundo.distribucion;
+		this.constantes = mundo.constantes;
 	}
 	
 	public int getTamañoMundo() {

@@ -1,6 +1,6 @@
 /** Proyecto: Juego de la vida.
  *  Implementa el concepto de Datos del accesoDato  
- *  @since: prototipo1.2
+ *  @since: prototipo1.0
  *  @source: Datos.java 
  *  @version: 1.2 - 2019/01/22 
  *  @author: Ramon Moñino
@@ -23,7 +23,7 @@ public class Datos {
 	private static ArrayList<SesionUsuario> datosSesiones = new ArrayList<SesionUsuario>();
 	private static ArrayList<Simulacion> datosSimulaciones = new ArrayList<Simulacion>();
 	private static HashMap<String, String> mapaEquivalencias = new HashMap<String, String>(); 
-	private static ArrayList<Mundo> datosMundo = new ArrayList<Mundo>();
+	// private static ArrayList<Mundo> datosMundo = new ArrayList<Mundo>();
 	
 	
 	/**
@@ -125,22 +125,42 @@ public class Datos {
 	/**
 	 * Metodo que registra el usuario en el almacen de usuarios
 	 * @param usr
+	 * @throws Exception 
 	 */
-	public void altaUsuario(Usuario usr) {
+	public void altaUsuario(Usuario usr) throws Exception {
 		assert usr != null;
 		int posicionInsercion = indexSort(usr.getIdUsr());
-		
+
 		if (posicionInsercion < 0) {
-			datosUsuarios.add(-posicionInsercion -1, usr);
-			registrarEquivalencias(usr);
-			
+			datosUsuarios.add(-posicionInsercion - 1, usr);
+			registrarEquivalenciasId(usr);
+
 		} else {
-			// Coincidencia de id
-			
-			// Error usr repetido
+
+			if (!datosUsuarios.get(posicionInsercion - 1).equals(usr)) {
+				int intentos = "BCDEFGHIJKLMNOPQRSTUVWXYZA".length() - 1;
+
+				do {
+					/* Coincidencia de ig generar variante */
+					posicionInsercion = indexSort(usr.getIdUsr());
+					usr = new Usuario(usr, usr.getIdUsr());
+					datosUsuarios.add(-posicionInsercion, usr);
+					registrarEquivalenciasId(usr);
+					intentos--;
+
+				} while (intentos > 0 && posicionInsercion < 0);
+
+				if (intentos == 0) {
+					throw new Exception("Error imposible generar variante");
+				}
+
+			} else {
+				throw new Exception("Error usr repetido");
+			}
+
 		}
 	}
-	
+
 	/**
 	 * Metodo que registra la simulacion en el almacen de simulaciones
 	 * @param simulacion
@@ -155,10 +175,14 @@ public class Datos {
 	 */
 	public void cargarUsuariosPrueba() {
 		for (int i = 0; i < 10; i++) {
-			altaUsuario(new Usuario(new Nif("0000000" + i + "K"), "Pepe", "López Pérez",
-					new DireccionPostal("C/ Luna", "2" + i, "3013" + i, "Murcia"),
-					new Correo("pepe" + i + "@gmail.com"), new Fecha(1999, 11, 12), new Fecha(2018, 01, 03),
-					new ClaveAcceso("Miau#" + i), RolUsuario.NORMAL));
+			try {
+				altaUsuario(new Usuario(new Nif("0000000" + i + "K"), "Pepe", "López Pérez",
+						new DireccionPostal("C/ Luna", "2" + i, "3013" + i, "Murcia"),
+						new Correo("pepe" + i + "@gmail.com"), new Fecha(1999, 11, 12), new Fecha(2018, 01, 03),
+						new ClaveAcceso("Miau#" + i), RolUsuario.NORMAL));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -211,7 +235,7 @@ public class Datos {
 		return sb.toString();
 	}
 	
-	private void registrarEquivalencias(Usuario usr) {
+	private void registrarEquivalenciasId(Usuario usr) {
 		mapaEquivalencias.put(usr.getNif().getNifTexto(), usr.getIdUsr());
 		mapaEquivalencias.put(usr.getCorreo().getCorreoTexto(), usr.getIdUsr());
 		mapaEquivalencias.put(usr.getIdUsr(), usr.getIdUsr());

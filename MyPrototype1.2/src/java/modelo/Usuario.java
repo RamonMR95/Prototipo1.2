@@ -82,6 +82,16 @@ public class Usuario {
 	}
 
 	/**
+	 * Constructor copia especial para poder modificar el idUsr.
+	 * @param usr
+	 * @param id
+	 */
+	public Usuario(Usuario usr, String idUsr) {
+		this(usr);
+		this.generarVarianteIdUsr();
+	}
+	
+	/**
 	 * Metodo de get que obtiene el objeto nif de la clase Nif
 	 * @return nif
 	 */
@@ -175,7 +185,7 @@ public class Usuario {
 	 * @param idUsr
 	 * @return id
 	 */
-	public String generarIdUsr() {
+	private String generarIdUsr() {
 		StringBuilder id = new StringBuilder();
 		id.append(this.nombre.substring(0, 1).toUpperCase());
 		String[]divApellidos = this.apellidos.split("\\s+");
@@ -189,7 +199,7 @@ public class Usuario {
 	/**
 	 * 
 	 */
-	public void generarVarianteIdUsr() {
+	private void generarVarianteIdUsr() {
 		String alfabetoNif = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		String alfabetoDesplazado = "BCDEFGHIJKLMNOPQRSTUVWXYZA";
 		this.idUsr = this.idUsr.substring(0, 4) + alfabetoDesplazado.charAt(alfabetoNif.indexOf(idUsr.charAt(4)));

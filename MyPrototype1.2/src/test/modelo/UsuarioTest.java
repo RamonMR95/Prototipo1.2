@@ -2,13 +2,14 @@ package modelo;
 /** 
  * Proyecto: Juego de la vida.
  * Clase JUnit5 de prueba automatizada de las características de la clase Usuario según el modelo1.
- * @since: prototipo1.1
+ * @since: prototipo1.0
  * @source: TestUsuario.java 
- * @version: 1.1 - 2019.01.29
+ * @version: 1.2 - 2019.01.29
  * @author: Ramon Moñino 
  */
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
@@ -119,6 +120,18 @@ public class UsuarioTest {
 	}
 	
 	@Test
+	public void testUsuarioCopiaEspecialVariarId() {
+		Usuario usuario = new Usuario(usuario1, usuario1.getIdUsr());
+		assertNotEquals(usuario.getIdUsr(), usuario1.getIdUsr());
+	}
+	
+	@Test
+	public void testSetNif() {
+		usuario2.setNif(new Nif("00000001R"));
+		assertEquals(usuario2.getNif().getNifTexto(), "00000001R");
+	}
+	
+	@Test
 	public void testSetNombre() {
 		usuario2.setNombre("Luis");
 		assertEquals(usuario2.getNombre(), "Luis");
@@ -185,31 +198,31 @@ public class UsuarioTest {
 
 	
 	// Test's CON DATOS NO VALIDOS
-
-	@Test
-	public void testUsuarioConvencionalBlanco() {
-		
-		Usuario usuario = new Usuario(
-				new Nif(" "), 
-				" ", 
-				" ",
-				new DireccionPostal(" "," ", " ", " "), 
-				new Correo(" "), 
-				new Fecha(),
-				new Fecha(), 
-				new ClaveAcceso(" "), 
-				RolUsuario.NORMAL
-				); 
-		assertNotNull(usuario.getNif());
-		assertNotNull(usuario.getNombre());
-		assertNotNull(usuario.getApellidos());
-		assertNotNull(usuario.getDireccionPostal());
-		assertNotNull(usuario.getCorreo());
-		assertNotNull(usuario.getFechaNacimiento());
-		assertNotNull(usuario.getFechaAlta());
-		assertNotNull(usuario.getClaveAcceso());
-		assertNotNull(usuario.getRol());
-	}
+//
+//	@Test
+//	public void testUsuarioConvencionalBlanco() {
+//		
+//		Usuario usuario = new Usuario(
+//				new Nif(" "), 
+//				" ", 
+//				" ",
+//				new DireccionPostal(" "," ", " ", " "), 
+//				new Correo(" "), 
+//				new Fecha(),
+//				new Fecha(), 
+//				new ClaveAcceso(" "),
+//				RolUsuario.NORMAL); 
+//		
+//		assertNotNull(usuario.getNif());
+//		assertNotNull(usuario.getNombre());
+//		assertNotNull(usuario.getApellidos());
+//		assertNotNull(usuario.getDireccionPostal());
+//		assertNotNull(usuario.getCorreo());
+//		assertNotNull(usuario.getFechaNacimiento());
+//		assertNotNull(usuario.getFechaAlta());
+//		assertNotNull(usuario.getClaveAcceso());
+//		assertNotNull(usuario.getRol());
+//	}
 	
 	@Test
 	public void testSetNifNull() {
