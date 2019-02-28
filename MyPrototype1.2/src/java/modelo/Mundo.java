@@ -44,7 +44,7 @@ public class Mundo {
 	 * Constructor por defecto de la clase Mundo.
 	 */
 	public Mundo() {
-		this("Demo", new byte[TAMAÑO_MUNDO][TAMAÑO_MUNDO], new LinkedList<Posicion>(), new HashMap<String, int[]>());
+		this("Demo1", new byte[TAMAÑO_MUNDO][TAMAÑO_MUNDO], new LinkedList<Posicion>(), new HashMap<String, int[]>());
 		aplicarLeyes();
 	}
 	
@@ -328,8 +328,8 @@ public class Mundo {
 					sb.append("| ");
 
 				}
-				sb.append("|\n");
 			}
+			sb.append("|\n");
 		}
 		return sb.toString();
 	}

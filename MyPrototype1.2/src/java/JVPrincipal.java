@@ -24,47 +24,43 @@ public class JVPrincipal {
 	/**
 	 * Secuencia principal del programa.
 	 */
-	 static Datos datos;
-	 static Presentacion interfazUsr ;
-	
+	static Datos datos;
+	static Presentacion interfazUsr;
+
 	public static void main(String[] args) {
 		datos = new Datos();
 		interfazUsr = new Presentacion();
-		
+
 		datos.cargarUsuariosPrueba();
 		datos.mostrarTodosUsuarios();
-		
+
 		try {
 			datos.cargarMundoDemo();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		
 		if (interfazUsr.inicioSesionCorrecto()) {
 
 			SesionUsuario sesion = new SesionUsuario();
-			sesion.setUsr(interfazUsr .getUsrEnSesion());
+			sesion.setUsr(interfazUsr.getUsrEnSesion());
 			sesion.setFecha(new Fecha());
 			datos.altaSesion(sesion);
-			
-			
+
 			interfazUsr.getSimulacion().setMundo(datos.buscarMundo("Demo1"));
 			datos.altaSimulacion(interfazUsr.getSimulacion());
-			
-			
-			System.out.println("Sesión: " + datos.getSesionesRegistradas() + '\n' + "Iniciada por: " + interfazUsr.getUsrEnSesion().getNombre()
-					+ " " + interfazUsr.getUsrEnSesion().getApellidos());
-			
+
+			System.out.println("Sesión: " + datos.getSesionesRegistradas() + '\n' + "Iniciada por: "
+					+ interfazUsr.getUsrEnSesion().getNombre() + " " + interfazUsr.getUsrEnSesion().getApellidos());
+
 			interfazUsr.mostrarSimulacion();
-			
+
 		} else {
 			System.out.println("\nDemasiados intentos fallidos...");
-			
+
 		}
 		System.out.println("Fin del programa.");
 	}
-
 
 } // class
