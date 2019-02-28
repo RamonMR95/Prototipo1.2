@@ -8,15 +8,14 @@ package modelo;
  * @author: Ramon Moñino
  */
 
-import accesoUsr.Presentacion;
 import util.Fecha;
 
 public class Simulacion {
+	private static final int CICLOS_SIMULACION = 20;
+	
 	private Usuario usr;
 	private Fecha fecha;
 	private Mundo mundo;
-	
-	private static final int CICLOS_SIMULACION = 20;
 
 	/**
 	 * Constructor convencional. Establece el valor inicial de cada uno de los
@@ -78,7 +77,7 @@ public class Simulacion {
 	}
 
 	
-	public static int getCiclosSimulacion() {
+	public int getCiclosSimulacion() {
 		return CICLOS_SIMULACION;
 	}
 
@@ -94,19 +93,4 @@ public class Simulacion {
 		return String.format("Simulacion [usr=%s, fecha=%s, mundo=%s]", usr, fecha, mundo);
 	}
 	
-	/**
-	 * Ejecuta una simulación del juego de la vida en la consola.
-	 */
-	public void lanzarDemo() {
-		
-		int generacion = 0;
-		
-		do {
-			System.out.println("\nGeneración: " + generacion);
-			new Presentacion().mostrarSimulacion();
-			mundo.actualizarMundo();
-			generacion++;
-		} while (generacion < CICLOS_SIMULACION);
-	}
-
 } // class

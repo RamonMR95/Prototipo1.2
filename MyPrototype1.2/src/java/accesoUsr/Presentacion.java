@@ -18,11 +18,17 @@ public class Presentacion {
 	/**
 	 * Atributos de la clase.
 	 */
-	private static Usuario usrEnSesion;
 	private static final int MAX_INTENTOS_FALLIDOS = 3;
-	private static Datos datos = new Datos();
-	private Simulacion simulacion = new Simulacion();
+	private static Usuario usrEnSesion;
+	private Datos datos;
+	private Simulacion simulacion;
 
+	public Presentacion() {
+		usrEnSesion = null;
+		datos = new Datos();
+		simulacion = new Simulacion();
+	}
+	
 	/**
 	 * Metodo get que obtiene el usuario que se encuentra en sesion.
 	 * @return usrEnSesion
@@ -31,6 +37,14 @@ public class Presentacion {
 		return usrEnSesion;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public Simulacion getSimulacion() {
+		return this.simulacion;
+	}
+	
 	/**
 	 * Controla el acceso de usuario.
 	 * @return true si la sesión se inicia correctamente.
@@ -50,32 +64,37 @@ public class Presentacion {
 			Usuario aux = new Usuario();
 			aux.setClaveAcceso(new ClaveAcceso(clave));
 			clave = aux.getClaveAcceso();
+			
 			if (usrEnSesion != null && usrEnSesion.getClaveAcceso().equals(clave)) {
-				teclado.close();
+				simulacion.setUsr(usrEnSesion);
 				return true;
+				
 			} else {
 				intentosPermitidos--;
 				System.out.print("Credenciales incorrectas: ");
 				System.out.println("Quedan " + intentosPermitidos + " intentos... ");
 			}
+			
 		} while (intentosPermitidos > 0);
 
-		teclado.close();
 		return false;
 	}
 
-	/**
-	 * Despliega en la consola el estado almacenado, corresponde a una generación
-	 * del Juego de la vida.
-	 */
 
+	/**
+	 * Ejecuta una simulación del juego de la vida en la consola.
+	 */
 	public void mostrarSimulacion() {
 		
-		for (int i = 0; i < simulacion.getMundo().getEspacio().length; i++) {
-			for (int j = 0; j < simulacion.getMundo().getEspacio().length; j++) {
-				System.out.print((simulacion.getMundo().getEspacio()[i][j] == 1) ? "|o" : "| ");
-			}
-			System.out.println("|");
-		}
+		int generacion = 0;
+		
+		do {
+			System.out.println("\nGeneración: " + generacion);
+			simulacion.getMundo().actualizarMundo();
+			generacion++;
+			System.out.println(simulacion.getMundo().toStringEstadoMundo());
+			
+		} while (generacion < simulacion.getCiclosSimulacion());
 	}
+
 }	// Class

@@ -1,6 +1,6 @@
 /** Proyecto: Juego de la vida.
  *  Implementa el concepto de Datos del accesoDato  
- *  @since: prototipo1.0
+ *  @since: prototipo1.1
  *  @source: Datos.java 
  *  @version: 1.2 - 2019/01/22 
  *  @author: Ramon Moñino
@@ -20,43 +20,27 @@ public class Datos {
 	 * Atributos del almacen de datos del prototipo.
 	 */
 	private static ArrayList<Usuario> datosUsuarios = new ArrayList<Usuario>();
+	private static HashMap<String, String> mapaEquivalencias = new HashMap<String, String>();
 	private static ArrayList<SesionUsuario> datosSesiones = new ArrayList<SesionUsuario>();
 	private static ArrayList<Simulacion> datosSimulaciones = new ArrayList<Simulacion>();
-	private static HashMap<String, String> mapaEquivalencias = new HashMap<String, String>(); 
-	// private static ArrayList<Mundo> datosMundo = new ArrayList<Mundo>();
-	
+	private static ArrayList<Mundo> datosMundos = new ArrayList<Mundo>();
+
+	// USUARIO
 	
 	/**
-	 * 
-	 * @param clave
-	 * @return
+	 * @param clave Key del mapa de equivalencias entre NIF, correo e idUsr
+	 * @return El valor que le corresponde a dicha clave
 	 */
 	public String getEquivalenciaId(String clave) {
 		return mapaEquivalencias.get(clave);
 	}
-	
+
 	/**
 	 * Metodo get que obtiene el número de usuarios registrados.
 	 * @return Numero de Usuarios
 	 */
 	public int getUsuariosRegistrados() {
 		return datosUsuarios.size();
-	}
-
-	/**
-	 * Metodo get que obtiene el numero de sesiones registradas.
-	 * @return Numero de sesionesRegistradas
-	 */
-	public int getSesionesRegistradas() {
-		return datosSesiones.size();
-	}
-
-	/**
-	 * Metodo get que obtiene el numero de simulaciones registradas.
-	 * @return Numero de simulaciones
-	 */
-	public int getSimulacionesRegistradas() {
-		return datosSimulaciones.size();
 	}
 
 	/**
@@ -68,17 +52,23 @@ public class Datos {
 		}
 	}
 
+	private void registrarEquivalenciasId(Usuario usr) {
+		mapaEquivalencias.put(usr.getNif().getNifTexto(), usr.getIdUsr());
+		mapaEquivalencias.put(usr.getCorreo().getCorreoTexto(), usr.getIdUsr());
+		mapaEquivalencias.put(usr.getIdUsr(), usr.getIdUsr());
+	}
+
 	/**
 	 * Busca usuario dado su nif.
 	 * @param idUsr - el nif del Usuario a buscar.
 	 * @return - el Usuario encontrado o null si no existe.
 	 */
-	public int indexSort(String idUsr) {
+	public int indexSortUsuario(String idUsr) {
 		int size = datosUsuarios.size();
 		int puntoMedio;
 		int limiteInferior = 0;
 		int limiteSuperior = size - 1;
-		
+
 		while (limiteInferior <= limiteSuperior) {
 			puntoMedio = (limiteSuperior + limiteInferior) / 2;
 			int comparacion = idUsr.compareTo(datosUsuarios.get(puntoMedio).getIdUsr());
@@ -97,31 +87,27 @@ public class Datos {
 		}
 		return -(limiteInferior + 1);
 	}
-	
+
 	/**
 	 * 
 	 * @param idUsr
 	 * @return
 	 */
 	public Usuario buscarUsuario(String idUsr) {
-		int indice = indexSort(idUsr) - 1;
-		
-		if (indice < 0) {
-			mapaEquivalencias.get(idUsr);
+		assert idUsr != null;
+		idUsr = mapaEquivalencias.get(idUsr);
+
+		if (idUsr != null) {
+			int indice = indexSortUsuario(idUsr) - 1;
+
+			if (indice >= 0) {
+				return datosUsuarios.get(indexSortUsuario(idUsr) - 1);
+			}
 		}
-		return datosUsuarios.get(indexSort(idUsr) - 1); // indexSort() es base 1
+		return null;
+
 	}
-	
-	/**
-	 * Metodo que registra la sesion en el almacen de sesiones del programa.
-	 * @param sesion
-	 */
-	public void altaSesion(SesionUsuario sesion) {
-		datosSesiones.add(sesion);
-		
-	}
-	
-	
+
 	/**
 	 * Metodo que registra el usuario en el almacen de usuarios
 	 * @param usr
@@ -129,7 +115,7 @@ public class Datos {
 	 */
 	public void altaUsuario(Usuario usr) throws Exception {
 		assert usr != null;
-		int posicionInsercion = indexSort(usr.getIdUsr());
+		int posicionInsercion = indexSortUsuario(usr.getIdUsr());
 
 		if (posicionInsercion < 0) {
 			datosUsuarios.add(-posicionInsercion - 1, usr);
@@ -142,7 +128,7 @@ public class Datos {
 
 				do {
 					/* Coincidencia de ig generar variante */
-					posicionInsercion = indexSort(usr.getIdUsr());
+					posicionInsercion = indexSortUsuario(usr.getIdUsr());
 					usr = new Usuario(usr, usr.getIdUsr());
 					datosUsuarios.add(-posicionInsercion, usr);
 					registrarEquivalenciasId(usr);
@@ -162,14 +148,6 @@ public class Datos {
 	}
 
 	/**
-	 * Metodo que registra la simulacion en el almacen de simulaciones
-	 * @param simulacion
-	 */
-	public void altaSimulacion(Simulacion simulacion) {
-		datosSimulaciones.add(simulacion);
-	}
-
-	/**
 	 * Metodo que realiza una carga los Usuarios de prueba que se van a almacenar en
 	 * nuestro programa.
 	 */
@@ -184,6 +162,58 @@ public class Datos {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	// SESIONES
+	
+	/**
+	 * Metodo get que obtiene el numero de sesiones registradas.
+	 * @return Numero de sesionesRegistradas
+	 */
+	public int getSesionesRegistradas() {
+		return datosSesiones.size();
+	}
+
+	/**
+	 * Metodo que registra la sesion en el almacen de sesiones del programa.
+	 * @param sesion
+	 */
+	public void altaSesion(SesionUsuario sesion) {
+		datosSesiones.add(sesion);
+
+	}
+
+	
+	// SIMULACIONES
+	
+	/**
+	 * 
+	 * @param idSimulacion
+	 * @return
+	 */
+	public Simulacion buscarSimulacion(String idSimulacion) {
+		for (Simulacion simulacion : datosSimulaciones) {
+			if (simulacion != null && simulacion.getIdSimulacion().equalsIgnoreCase(idSimulacion)) {
+				return simulacion;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Metodo que registra la simulacion en el almacen de simulaciones
+	 * @param simulacion
+	 */
+	public void altaSimulacion(Simulacion simulacion) {
+		datosSimulaciones.add(simulacion);
+	}
+
+	/**
+	 * Metodo get que obtiene el numero de simulaciones registradas.
+	 * @return Numero de simulaciones
+	 */
+	public int getSimulacionesRegistradas() {
+		return datosSimulaciones.size();
 	}
 
 	/**
@@ -235,9 +265,106 @@ public class Datos {
 		return sb.toString();
 	}
 	
-	private void registrarEquivalenciasId(Usuario usr) {
-		mapaEquivalencias.put(usr.getNif().getNifTexto(), usr.getIdUsr());
-		mapaEquivalencias.put(usr.getCorreo().getCorreoTexto(), usr.getIdUsr());
-		mapaEquivalencias.put(usr.getIdUsr(), usr.getIdUsr());
+	// MUNDO
+	
+	/**
+	 * Metodo get que obtiene el numero de mundos registrados
+	 * que coincide con el tamaño del arraylist datosMundos
+	 * @return Numero de mundos registrados
+	 */
+	public int getMundosRegistrados() {
+		return datosMundos.size();
 	}
-}	// Class
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Mundo buscarMundo(String id) {
+		for (Mundo mundo : datosMundos) {
+			if (mundo != null && mundo.getId().equalsIgnoreCase(id)) {
+				return mundo;
+			}
+		}
+		return null;
+	}
+	/**
+	 * Busca usuario dado su nif.
+	 * @param idUsr - el nif del Usuario a buscar.
+	 * @return - el Usuario encontrado o null si no existe.
+	 */
+	public int indexSortMundo(String idUsr) {
+		int size = datosMundos.size();
+		int puntoMedio;
+		int limiteInferior = 0;
+		int limiteSuperior = size - 1;
+
+		while (limiteInferior <= limiteSuperior) {
+			puntoMedio = (limiteSuperior + limiteInferior) / 2;
+			int comparacion = idUsr.compareTo(datosMundos.get(puntoMedio).getId());
+
+			if (comparacion == 0) {
+				return puntoMedio + 1;
+			}
+
+			if (comparacion > 0) {
+				limiteInferior = puntoMedio + 1;
+
+			} else {
+				limiteSuperior = puntoMedio - 1;
+			}
+
+		}
+		return -(limiteInferior + 1);
+	}
+
+	/**
+	 * Metodo que inserta en el arraylist de mundos de forma binaria un nuevo mundo
+	 * @param mundo - mundo que va a ser dado de alta
+	 * @throws Exception
+	 */
+	public void altaMundo(Mundo mundo) throws Exception {
+		assert mundo != null;
+		int posicionInsercion = indexSortMundo(mundo.getId());
+
+		if (posicionInsercion < 0) {
+			datosMundos.add(-posicionInsercion - 1, mundo);
+
+		} else {
+			throw new Exception("Error: nombre repetido");
+			
+		}
+
+	}
+
+	/**
+	 * Carga datos demo en la matriz que representa el mundo.
+	 * @throws Exception 
+	 */
+	public void cargarMundoDemo() throws Exception {
+		Mundo mundo = new Mundo();
+		mundo.setEspacio(new byte[][]
+			  { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } });
+		
+		altaMundo(mundo);
+	}
+
+} // Class

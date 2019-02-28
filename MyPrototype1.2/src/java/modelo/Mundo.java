@@ -4,12 +4,20 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.sun.tools.javac.code.Attribute.Array;
-
+/** Proyecto: Juego de la vida.
+ *  Implementa el concepto de Nif del modelo  
+ *  @since: prototipo1.2
+ *  @source: Nif.java 
+ *  @version: 1.2 - 2019/01/22 
+ *  @author: Ramon Moñino
+ */
 
 public class Mundo {
+	/**
+	 * Atributos de la clase Mundo 
+	 */
 	private String nombre;
-	private static final int TAMAÑO_MUNDO = 25;
+	private static final int TAMAÑO_MUNDO = 18;
 	private byte[][] espacio = new byte[TAMAÑO_MUNDO][TAMAÑO_MUNDO];
 	private List<Posicion> distribucion;
 	private HashMap<String, int[]> constantes;
@@ -17,81 +25,111 @@ public class Mundo {
 	enum FormaEspacio { PLANO, ESFERICO }
 	private static final FormaEspacio TIPO_MUNDO = FormaEspacio.PLANO;
 
-	public Mundo(String nombre,byte [][] espacio,  List<Posicion> distribucion, HashMap<String, int[]> constantes) {
+	/**
+	 * Constructor convencional de la clase Mundo.
+	 * @param nombre - Nombre de nuestro mundo.
+	 * @param espacio - Array que define nuestro mundo.
+	 * @param distribucion - Lista enlazada que contiene las células vivas
+	 * @param constantes - Mapa de constantes disponibles para configurar las leyes de nuestro mundo.
+	 */
+	public Mundo(String nombre, byte [][] espacio,  List<Posicion> distribucion, HashMap<String, int[]> constantes) {
 		this.espacio = espacio;
 		this.nombre = nombre;
 		this.distribucion = distribucion;
 		this.constantes = constantes;
+		
 	}
 	
+	/**
+	 * Constructor por defecto de la clase Mundo.
+	 */
 	public Mundo() {
-		this("Demo", crearMundoDemo(), new LinkedList<Posicion>(), new HashMap<String, int[]>());
-		leyesEstandar();
+		this("Demo", new byte[TAMAÑO_MUNDO][TAMAÑO_MUNDO], new LinkedList<Posicion>(), new HashMap<String, int[]>());
+		aplicarLeyes();
 	}
 	
-	// TODO Terminar constructor copia
+	/**
+	 * Contructor copia de la clase mundo
+	 * @param mundo - Mundo que va a ser copiado
+	 */
 	public Mundo(Mundo mundo) {
-		this.espacio = System.arraycopy(mundo.espacio, 0, espacio, 0, espacio.length);
-		this.nombre = mundo.nombre;
-		this.distribucion = mundo.distribucion;
-		this.constantes = mundo.constantes;
+		this.nombre = new String(mundo.nombre);
+		this.espacio = mundo.espacio.clone();
+		this.distribucion = new LinkedList<Posicion>(mundo.distribucion);
+		this.constantes = new HashMap<String, int[]>(mundo.constantes);
 	}
 	
+	/**
+	 * Metodo get que obtiene el valor del tamaño del mundo.
+	 * @return TAMAÑO_MUNDO - tamaño de nuestro mundo.
+	 */
 	public int getTamañoMundo() {
 		return TAMAÑO_MUNDO;
 	}
 	
-	
+	/**
+	 * Metodo get que obtiene el nombre del mundo.
+	 * @return nombre es el nombre de nuestro mundo.
+	 */
 	public String getNombre() {
 		return nombre;
 	}
 
+	/**
+	 * Metodo set que establece el 
+	 * array 2d que forma nuestro Mundo.
+	 * @param espacio - array 2d que forma nuestro mundo.
+	 */
+	public void setEspacio(byte[][] espacio) {
+		assert espacio != null;
+		this.espacio = espacio;
+	}
+	
+	/**
+	 * Metodo get que obtiene el array 2d que define nuestro mundo.
+	 * @return espacio array que define el mundo.
+	 */
 	public byte[][] getEspacio() {
 		return espacio;
 	}
 
+	/**
+	 * Metodo get que obtiene la lista que contiene los celulas vivas del mundo.
+	 * @return distribucion - lista que contiene las celulas vivas
+	 */
 	public List<Posicion> getDistribucion() {
 		return distribucion;
 	}
 
+	/**
+	 * Metodo get que obtiene el mapa que contiene las leyes de nuestro mundo
+	 * @return contantes - mapa que contiene las leyes del mundo
+	 */
 	public HashMap<String, int[]> getConstantes() {
 		return constantes;
 	}
 
+	/**
+	 * Metodo que obtiene el tipo de mundo esférico / plano
+	 * @return TIPO_MUNDO - forma del mundo
+	 */
 	public static FormaEspacio getTipoMundo() {
 		return TIPO_MUNDO;
 	}
 
-	private void leyesEstandar() {
+	public String getId() {
+		return nombre;
+	}
+
+	/**
+	 * Metodo que inserta nuestras leyes estandar en el mapa constantes
+	 */
+	private void aplicarLeyes() {
 		constantes.put("ValoresSobrevivir", new int[] { 2, 3 });
 		constantes.put("ValoresRenacer", new int[] { 3 });
 	}
 	
-	/**
-	 * Carga datos demo en la matriz que representa el mundo.
-	 */
-	public static byte [][] crearMundoDemo() {
-		return new byte[][] { 
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0 }, 
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0 }, 
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0 }, 
-				{ 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } 
-		};
-	}
+	
 	/**
 	 * Actualiza el estado del Juego de la Vida. Actualiza según la configuración
 	 * establecida para la forma del espacio.
@@ -277,4 +315,23 @@ public class Mundo {
 		}
 		return 0;
 	}
+
+	public String toStringEstadoMundo() {
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < espacio.length; i++) {
+			for (int j = 0; j < espacio.length; j++) {
+				if (espacio[i][j] == 1) {
+					sb.append("|o");
+
+				} else {
+					sb.append("| ");
+
+				}
+				sb.append("|\n");
+			}
+		}
+		return sb.toString();
+	}
+	
 }

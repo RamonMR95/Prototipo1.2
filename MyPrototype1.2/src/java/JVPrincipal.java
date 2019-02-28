@@ -17,7 +17,6 @@ Proyecto: Juego de la vida.
 import accesoDato.Datos;
 import accesoUsr.Presentacion;
 import modelo.SesionUsuario;
-import modelo.Simulacion;
 import util.Fecha;
 
 public class JVPrincipal {
@@ -25,27 +24,44 @@ public class JVPrincipal {
 	/**
 	 * Secuencia principal del programa.
 	 */
-	static Datos datos = new Datos();
-	static Presentacion interfazUsr = new Presentacion();
+	 static Datos datos;
+	 static Presentacion interfazUsr ;
 	
 	public static void main(String[] args) {
+		datos = new Datos();
+		interfazUsr = new Presentacion();
 		
 		datos.cargarUsuariosPrueba();
 		datos.mostrarTodosUsuarios();
+		
+		try {
+			datos.cargarMundoDemo();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
+		
 		if (interfazUsr.inicioSesionCorrecto()) {
 
 			SesionUsuario sesion = new SesionUsuario();
 			sesion.setUsr(interfazUsr .getUsrEnSesion());
 			sesion.setFecha(new Fecha());
-			
 			datos.altaSesion(sesion);
+			
+			
+			interfazUsr.getSimulacion().setMundo(datos.buscarMundo("Demo1"));
+			datos.altaSimulacion(interfazUsr.getSimulacion());
+			
+			
 			System.out.println("Sesión: " + datos.getSesionesRegistradas() + '\n' + "Iniciada por: " + interfazUsr.getUsrEnSesion().getNombre()
 					+ " " + interfazUsr.getUsrEnSesion().getApellidos());
 			
-			new Simulacion().lanzarDemo();
+			interfazUsr.mostrarSimulacion();
+			
 		} else {
 			System.out.println("\nDemasiados intentos fallidos...");
+			
 		}
 		System.out.println("Fin del programa.");
 	}
