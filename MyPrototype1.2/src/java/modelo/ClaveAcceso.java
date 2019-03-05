@@ -16,16 +16,24 @@ public class ClaveAcceso {
 	/**
 	 * Constructor convencional de la clase.
 	 * @param texto
+	 * @throws ModeloException 
 	 */
-	public ClaveAcceso(String texto) {
-		setTexto(texto);
+	public ClaveAcceso(String texto) throws ModeloException {
+			setTexto(texto);
 	}
 
 	/**
 	 * Constructor por defecto de la clase que establece una contraseña por defecto.
 	 */
 	public ClaveAcceso() {
-		this("Miau#0");
+		try {
+			setTexto("Miau#0");
+			
+		} catch (ModeloException e) {
+			
+		}
+
+		
 	}
 
 	/**
@@ -47,16 +55,22 @@ public class ClaveAcceso {
 	/**
 	 * Metodo set que establece el texto de nuestra contraseña encriptandola.
 	 * @param texto
+	 * @throws ModeloException 
 	 */
-	public void setTexto(String texto) {
+	public void setTexto(String texto) throws ModeloException {
 		assert texto != null;
+		
 		if (claveAccesoValida(texto)) {
 			this.texto = encriptarCesar(texto);
+
+		} else {
+			throw new ModeloException("ClaveAcceso: no válida");
+
 		}
-		
-		if (this.texto == null) {
-			this.texto = new ClaveAcceso().texto;
-		}
+			
+//		if (this.texto == null) {
+//			this.texto = new ClaveAcceso().texto;
+//		}
 	}
 
 	/**
@@ -67,6 +81,7 @@ public class ClaveAcceso {
 	private static String encriptarCesar(String texto) {
 		StringBuilder result = new StringBuilder();
 		int desplazamiento = 400;
+		
 		for (int i = 0; i < texto.length(); i++) {
 			result.append((char)(texto.charAt(i) + desplazamiento));
 		}

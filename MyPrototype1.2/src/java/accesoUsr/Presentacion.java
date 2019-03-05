@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import accesoDato.Datos;
 import modelo.ClaveAcceso;
+import modelo.ModeloException;
 import modelo.Simulacion;
 import modelo.Usuario;
 
@@ -57,7 +58,14 @@ public class Presentacion {
 			System.out.print("Introduce el ID de usuario: \n");
 			String id = teclado.nextLine();
 			System.out.print("Introduce clave acceso: ");
-			ClaveAcceso clave = new ClaveAcceso(teclado.nextLine());
+			ClaveAcceso clave = null;
+			
+			try {
+				clave = new ClaveAcceso(teclado.nextLine());
+				
+			} catch (ModeloException e) {
+				intentosPermitidos--;
+			}
 
 			usrEnSesion = datos.buscarUsuario(datos.getEquivalenciaId(id));
 
@@ -67,6 +75,7 @@ public class Presentacion {
 			
 			if (usrEnSesion != null && usrEnSesion.getClaveAcceso().equals(clave)) {
 				simulacion.setUsr(usrEnSesion);
+				teclado.close();
 				return true;
 				
 			} else {
@@ -76,7 +85,8 @@ public class Presentacion {
 			}
 			
 		} while (intentosPermitidos > 0);
-
+		
+		teclado.close();
 		return false;
 	}
 

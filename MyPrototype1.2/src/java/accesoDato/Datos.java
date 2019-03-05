@@ -154,13 +154,20 @@ public class Datos {
 	public void cargarUsuariosPrueba() {
 		for (int i = 0; i < 10; i++) {
 			try {
-				altaUsuario(new Usuario(new Nif("0000000" + i + "K"), "Pepe", "López Pérez",
-						new DireccionPostal("C/ Luna", "2" + i, "3013" + i, "Murcia"),
-						new Correo("pepe" + i + "@gmail.com"), new Fecha(1999, 11, 12), new Fecha(2018, 01, 03),
-						new ClaveAcceso("Miau#" + i), RolUsuario.NORMAL));
+				try {
+					altaUsuario(new Usuario(new Nif("0000000" + i + "K"), "Pepe", "López Pérez",
+							new DireccionPostal("C/ Luna", "2" + i, "3013" + i, "Murcia"),
+							new Correo("pepe" + i + "@gmail.com"), new Fecha(1999, 11, 12), new Fecha(2018, 01, 03),
+							new ClaveAcceso("Miau#" + i), RolUsuario.NORMAL));
+
+				} catch (ModeloException e) {
+					
+				}
+
 			} catch (Exception e) {
-				e.printStackTrace();
+
 			}
+
 		}
 	}
 
