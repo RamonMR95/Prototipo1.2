@@ -15,7 +15,7 @@ public class ClaveAcceso {
 
 	/**
 	 * Constructor convencional de la clase.
-	 * @param texto
+	 * @param texto - Cadena de caracteres que formará la clave de acceso
 	 * @throws ModeloException 
 	 */
 	public ClaveAcceso(String texto) throws ModeloException {
@@ -24,21 +24,15 @@ public class ClaveAcceso {
 
 	/**
 	 * Constructor por defecto de la clase que establece una contraseña por defecto.
+	 * @throws ModeloException 
 	 */
-	public ClaveAcceso() {
-		try {
-			setTexto("Miau#0");
-			
-		} catch (ModeloException e) {
-			
-		}
-
-		
+	public ClaveAcceso() throws ModeloException {
+		setTexto("Miau#0");
 	}
 
 	/**
 	 * Constructor copia de la clase
-	 * @param claveacceso
+	 * @param claveacceso - Clave de acceso del usuario que quiere entrar en sesión
 	 */
 	public ClaveAcceso(ClaveAcceso claveacceso) {
 		this.texto = new String(claveacceso.texto);
@@ -54,7 +48,7 @@ public class ClaveAcceso {
 
 	/**
 	 * Metodo set que establece el texto de nuestra contraseña encriptandola.
-	 * @param texto
+	 * @param texto - Cadena de caracteres que formará la clave de acceso
 	 * @throws ModeloException 
 	 */
 	public void setTexto(String texto) throws ModeloException {
@@ -63,19 +57,16 @@ public class ClaveAcceso {
 		if (claveAccesoValida(texto)) {
 			this.texto = encriptarCesar(texto);
 
-		} else {
+		} 
+		 else {
 			throw new ModeloException("ClaveAcceso: no válida");
-
-		}
 			
-//		if (this.texto == null) {
-//			this.texto = new ClaveAcceso().texto;
-//		}
+		}
 	}
 
 	/**
 	 * Metodo que encripta la clave de acceso de usuario adquirida por teclado
-	 * @param texto
+	 * @param texto - Cadena de caracteres que formará la clave de acceso
 	 * @return Clave de acceso encriptada
 	 */
 	private static String encriptarCesar(String texto) {
@@ -90,7 +81,7 @@ public class ClaveAcceso {
 	
 	/**
 	 * Metodo que comprueba si una clave de acceso es valida o no.
-	 * @param texto
+	 * @param texto - Cadena de caracteres que formará la clave de acceso
 	 * @return true, si la clave de acceso es valida.
 	 */
 	private boolean claveAccesoValida(String texto) {

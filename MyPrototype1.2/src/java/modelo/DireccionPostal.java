@@ -18,12 +18,13 @@ public class DireccionPostal {
 
 	/**
 	 * Constructor convencional de la clase que usa los metodos set.
-	 * @param calle
-	 * @param numero
-	 * @param CP
-	 * @param poblacion
+	 * @param calle - calle del usuario
+	 * @param numero - numero del domicilio del usuario
+	 * @param CP - Codigo postal del usuario
+	 * @param poblacion - Población en la que reside el usuario
+	 * @throws ModeloException 
 	 */
-	public DireccionPostal(String calle, String numero, String CP, String poblacion) {
+	public DireccionPostal(String calle, String numero, String CP, String poblacion) throws ModeloException {
 		setCalle(calle);
 		setNumero(numero);
 		setCP(CP);
@@ -32,8 +33,9 @@ public class DireccionPostal {
 
 	/**
 	 * Constructor por defecto de la clase.
+	 * @throws ModeloException 
 	 */
-	public DireccionPostal() {
+	public DireccionPostal() throws ModeloException {
 		this("calle", "15", "30157", "poblacion");
 	}
 
@@ -50,7 +52,7 @@ public class DireccionPostal {
 
 	/**
 	 * Metodo get que obtiene la cadena de caracteres que forma la calle.
-	 * @return calle
+	 * @return calle - calle del usuario
 	 */
 	public String getCalle() {
 		return calle;
@@ -58,22 +60,24 @@ public class DireccionPostal {
 
 	/**
 	 * Metodo set que establece la calle de la direccion postal
-	 * @param calle
+	 * @param calle - calle del usuario
+	 * @throws ModeloException 
 	 */
-	public void setCalle(String calle) {
+	public void setCalle(String calle) throws ModeloException {
 		assert calle != null;
+		
 		if (calleValida(calle)) {
 			this.calle = calle;
 		}
-		if (this.calle == null) {
-			this.calle = new DireccionPostal().calle;
+		else {
+			throw new ModeloException("DireccionPostal Calle: Formato no válido");
 		}
 
 	}
 
 	/**
 	 * Metodo que comprueba si nuestra calle es valida.
-	 * @param calle
+	 * @param calle - calle del usuario
 	 * @return true, si es una calle valida.
 	 */
 	private boolean calleValida(String calle) {
@@ -82,7 +86,7 @@ public class DireccionPostal {
 
 	/**
 	 * Metodo get que obtiene el numero que forma la direccion postal.
-	 * @return numero
+	 * @return numero - numero del domicilio del usuario
 	 */
 	public String getNumero() {
 		return numero;
@@ -90,21 +94,23 @@ public class DireccionPostal {
 
 	/**
 	 * Metodo set que establece el numero de la direccion postal
-	 * @param numero
+	 * @param numero - numero del domicilio del usuario
+	 * @throws ModeloException 
 	 */
-	public void setNumero(String numero) {
+	public void setNumero(String numero) throws ModeloException {
 		assert numero != null;
+		
 		if (numeroValido(numero)) {
 			this.numero = numero;
 		}
-		if (this.numero == null) {
-			this.numero = new DireccionPostal().numero;
+		 else {
+			throw new ModeloException("Direccionpostal Numero: Formato no válido");
 		}
 	}
 
 	/**
 	 * Metodo que comprueba si un numero es valido o no.
-	 * @param numero
+	 * @param numero - numero del domicilio del usuario
 	 * @return true, si el numero es valido
 	 */
 	private boolean numeroValido(String numero) {
@@ -113,7 +119,7 @@ public class DireccionPostal {
 
 	/**
 	 * Metodo get que obtiene la cadena de caracteres CP que forma el codigo postal la direccion postal.
-	 * @return CP
+	 * @return CP - Codigo postal del usuario
 	 */
 	public String getCP() {
 		return CP;
@@ -121,21 +127,22 @@ public class DireccionPostal {
 
 	/**
 	 * Metodo set que establece el codigo postal de la direccion postal.
-	 * @param CP
+	 * @param CP - Codigo postal del usuario
+	 * @throws ModeloException 
 	 */
-	public void setCP(String CP) {
+	public void setCP(String CP) throws ModeloException {
 		assert CP != null;
 		if (cpValido(CP)) {
 			this.CP = CP;
 		}
-		if (this.CP == null) {
-			this.CP = new DireccionPostal().CP;
+		 else {
+			throw new ModeloException("Direccionpostal CP: Formato no válido");
 		}
 	}
 
 	/**
 	 * Metodo que comprueba si el CP es valido o no.
-	 * @param CP
+	 * @param CP - Codigo postal del usuario
 	 * @return true, si el CP es valido.
 	 */
 	private boolean cpValido(String CP) {
@@ -144,7 +151,7 @@ public class DireccionPostal {
 
 	/**
 	 * Metodo get que obtiene la cadena de caracteres poblacion que forma la direccion postal.
-	 * @return poblacion
+	 * @return poblacion - Población en la que reside el usuario
 	 */ 
 	public String getPoblacion() {
 		return poblacion;
@@ -152,22 +159,24 @@ public class DireccionPostal {
 
 	/**
 	 * Metodo set que establece la poblacion de la direccion postal.
-	 * @param poblacion
+	 * @param poblacion - Población en la que reside el usuario
+	 * @throws ModeloException 
 	 */
-	public void setPoblacion(String poblacion) {
+	public void setPoblacion(String poblacion) throws ModeloException {
 		assert poblacion != null;
+		
 		if (poblacionValido(poblacion)) {
 			this.poblacion = poblacion;
 		}
-		if (this.poblacion == null) {
-			this.poblacion = new DireccionPostal().poblacion;
+		 else {
+			throw new ModeloException("Direccionpostal Población: Formato no válido");
 		}
 
 	}
 
 	/**
 	 * Metodo que comprueba si una poblacion es valida o no.
-	 * @param poblacion
+	 * @param poblacion - Población en la que reside el usuario
 	 * @return true, si la poblacion es valida
 	 */
 	private boolean poblacionValido(String poblacion) {

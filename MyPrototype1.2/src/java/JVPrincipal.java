@@ -15,7 +15,9 @@ Proyecto: Juego de la vida.
  */
 
 import accesoDato.Datos;
+import accesoDato.DatosException;
 import accesoUsr.Presentacion;
+import modelo.ModeloException;
 import modelo.SesionUsuario;
 import util.Fecha;
 
@@ -28,39 +30,44 @@ public class JVPrincipal {
 	static Presentacion interfazUsr;
 
 	public static void main(String[] args) {
-		datos = new Datos();
-		interfazUsr = new Presentacion();
-
-		datos.cargarUsuariosPrueba();
-		datos.mostrarTodosUsuarios();
-
+		
 		try {
-			datos.cargarMundoDemo();
+			datos = new Datos();
+			interfazUsr = new Presentacion();
 
-		} catch (Exception e) {
-			e.printStackTrace();
+			datos.cargarUsuariosPrueba();
+			datos.mostrarTodosUsuarios();
+
+			try {
+				datos.cargarMundoDemo();
+			} catch (DatosException e) {
+
+			}
+
+			if (interfazUsr.inicioSesionCorrecto()) {
+
+				SesionUsuario sesion = new SesionUsuario();
+				sesion.setUsr(interfazUsr.getUsrEnSesion());
+				sesion.setFecha(new Fecha());
+				datos.altaSesion(sesion);
+
+				interfazUsr.getSimulacion().setMundo(datos.buscarMundo("Demo1"));
+				datos.altaSimulacion(interfazUsr.getSimulacion());
+
+				System.out.println("Sesión: " + datos.getSesionesRegistradas() + '\n' + "Iniciada por: "
+						+ interfazUsr.getUsrEnSesion().getNombre() + " " + interfazUsr.getUsrEnSesion().getApellidos());
+
+				interfazUsr.mostrarSimulacion();
+
+			} else {
+				System.out.println("\nDemasiados intentos fallidos...");
+
+			}
+			System.out.println("Fin del programa.");
+			
+		} catch (ModeloException e) {
+
 		}
-
-		if (interfazUsr.inicioSesionCorrecto()) {
-
-			SesionUsuario sesion = new SesionUsuario();
-			sesion.setUsr(interfazUsr.getUsrEnSesion());
-			sesion.setFecha(new Fecha());
-			datos.altaSesion(sesion);
-
-			interfazUsr.getSimulacion().setMundo(datos.buscarMundo("Demo1"));
-			datos.altaSimulacion(interfazUsr.getSimulacion());
-
-			System.out.println("Sesión: " + datos.getSesionesRegistradas() + '\n' + "Iniciada por: "
-					+ interfazUsr.getUsrEnSesion().getNombre() + " " + interfazUsr.getUsrEnSesion().getApellidos());
-
-			interfazUsr.mostrarSimulacion();
-
-		} else {
-			System.out.println("\nDemasiados intentos fallidos...");
-
-		}
-		System.out.println("Fin del programa.");
 	}
 
 } // class

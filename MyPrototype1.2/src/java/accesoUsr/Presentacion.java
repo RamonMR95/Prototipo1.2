@@ -24,7 +24,7 @@ public class Presentacion {
 	private Datos datos;
 	private Simulacion simulacion;
 
-	public Presentacion() {
+	public Presentacion() throws ModeloException {
 		usrEnSesion = null;
 		datos = new Datos();
 		simulacion = new Simulacion();
@@ -32,15 +32,15 @@ public class Presentacion {
 	
 	/**
 	 * Metodo get que obtiene el usuario que se encuentra en sesion.
-	 * @return usrEnSesion
+	 * @return usrEnSesion - usuario en sesión
 	 */
 	public Usuario getUsrEnSesion() {
 		return usrEnSesion;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Metodo get que obtiene la simulación actual
+	 * @return simulación - simulación actual del programa
 	 */
 	public Simulacion getSimulacion() {
 		return this.simulacion;
@@ -48,48 +48,48 @@ public class Presentacion {
 	
 	/**
 	 * Controla el acceso de usuario.
-	 * @return true si la sesión se inicia correctamente.
+	 * @return true - si la sesión se inicia correctamente.
 	 */
 	public boolean inicioSesionCorrecto() {
 		Scanner teclado = new Scanner(System.in); // Entrada por consola.
 		int intentosPermitidos = MAX_INTENTOS_FALLIDOS;
 
 		do {
-			System.out.print("Introduce el ID de usuario: \n");
+			System.out.print("\nIntroduce el ID de usuario:\n");
 			String id = teclado.nextLine();
-			System.out.print("Introduce clave acceso: ");
+			System.out.print("\nIntroduce clave acceso:\n");
 			ClaveAcceso clave = null;
-			
+
 			try {
+				clave = new ClaveAcceso();
 				clave = new ClaveAcceso(teclado.nextLine());
-				
+
+				usrEnSesion = datos.buscarUsuario(datos.getEquivalenciaId(id));
+
+				Usuario aux = new Usuario();
+				aux.setClaveAcceso(new ClaveAcceso(clave));
+				clave = aux.getClaveAcceso();
+
 			} catch (ModeloException e) {
-				intentosPermitidos--;
+				
 			}
-
-			usrEnSesion = datos.buscarUsuario(datos.getEquivalenciaId(id));
-
-			Usuario aux = new Usuario();
-			aux.setClaveAcceso(new ClaveAcceso(clave));
-			clave = aux.getClaveAcceso();
 			
 			if (usrEnSesion != null && usrEnSesion.getClaveAcceso().equals(clave)) {
 				simulacion.setUsr(usrEnSesion);
 				teclado.close();
 				return true;
-				
+
 			} else {
 				intentosPermitidos--;
 				System.out.print("Credenciales incorrectas: ");
 				System.out.println("Quedan " + intentosPermitidos + " intentos... ");
 			}
-			
+
 		} while (intentosPermitidos > 0);
-		
+
 		teclado.close();
 		return false;
 	}
-
 
 	/**
 	 * Ejecuta una simulación del juego de la vida en la consola.

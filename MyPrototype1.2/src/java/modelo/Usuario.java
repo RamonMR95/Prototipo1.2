@@ -40,9 +40,10 @@ public class Usuario {
 	 * @param fechaAlta
 	 * @param claveAcceso
 	 * @param rol
+	 * @throws ModeloException 
 	 */
 	public Usuario(Nif nif, String nombre, String apellidos, DireccionPostal direccionPostal, Correo correo,
-			Fecha fechaNacimiento, Fecha fechaAlta, ClaveAcceso claveAcceso, RolUsuario rol) {
+			Fecha fechaNacimiento, Fecha fechaAlta, ClaveAcceso claveAcceso, RolUsuario rol) throws ModeloException {
 		setNif(nif);
 		setNombre(nombre);
 		setApellidos(apellidos);
@@ -57,8 +58,9 @@ public class Usuario {
 
 	/**
 	 * Constructor por defecto. Reenvía al constructor convencional.
+	 * @throws ModeloException 
 	 */
-	public Usuario() {
+	public Usuario() throws ModeloException {
 		this(new Nif(), "Nombre", "Apellido Apellido", new DireccionPostal(), new Correo(), new Fecha(), new Fecha(),
 				new ClaveAcceso(), RolUsuario.NORMAL );
 	}
@@ -119,15 +121,16 @@ public class Usuario {
 	/**
 	 * Metodo set que establece un nombre de usuario dado por parametro
 	 * @param nombre
+	 * @throws ModeloException 
 	 */
-	public void setNombre(String nombre) {
+	public void setNombre(String nombre) throws ModeloException {
 		assert nombre != null;
+		
 		if (nombreValido(nombre)) {
 			this.nombre = nombre;
 		}
-
-		if (this.nombre == null) { 
-			this.nombre = new Usuario().nombre; 
+		 else {
+			throw new ModeloException("Usuario: Formato del nombre no válido");
 		}
 	}
 
@@ -151,16 +154,18 @@ public class Usuario {
 	/**
 	 * Metodo set que establece los apellidos de un usuario dado por parametro
 	 * @param apellidos
+	 * @throws ModeloException 
 	 */
-	public void setApellidos(String apellidos) {
+	public void setApellidos(String apellidos) throws ModeloException {
 		assert apellidos != null;
+		
 		if (apellidosValidos(apellidos)) {
 			this.apellidos = apellidos;
 		}
-
-		if (this.apellidos == null) {
-			this.apellidos = new Usuario().apellidos;
+		 else {
+			 throw new ModeloException("Usuario: Formato apellidos no válido");
 		}
+
 	}
 
 	/**
@@ -225,7 +230,7 @@ public class Usuario {
 
 	/**
 	 * Metodo get que obtiene el Objeto correo
-	 * @return correo
+	 * @return correo - Correo del usuario
 	 */
 	public Correo getCorreo() {
 		return correo;
@@ -233,7 +238,7 @@ public class Usuario {
 
 	/**
 	 * Metodo set que establece el correo de un usuario que se pasado por parametro
-	 * @param correo
+	 * @param correo - Correo del usuario
 	 */
 	public void setCorreo(Correo correo) {
 		assert correo != null;
@@ -242,7 +247,7 @@ public class Usuario {
 
 	/**
 	 * Metodo set que obtiene el objeto fechadenacimiento de un usuario
-	 * @return fechaNacimiento
+	 * @return fechaNacimiento - Fecha de nacimiento del usuario
 	 */
 	public Fecha getFechaNacimiento() {
 		return fechaNacimiento;
@@ -251,21 +256,23 @@ public class Usuario {
 
 	/**
 	 * Metodo set que establece la fecha de nacimiento de un usuario dada por parametro.
-	 * @param fechaNacimiento
+	 * @param fechaNacimiento - Fecha de nacimiento del usuario
+	 * @throws ModeloException 
 	 */
-	public void setFechaNacimiento(Fecha fechaNacimiento) {
+	public void setFechaNacimiento(Fecha fechaNacimiento) throws ModeloException {
 		assert fechaNacimiento != null;
+		
 		if (fechaNacimientoValida(fechaNacimiento)) {
 			this.fechaNacimiento = fechaNacimiento;
 		}
-		if (this.fechaNacimiento == null) {
-			this.fechaNacimiento = new Usuario().fechaNacimiento;
+		 else {
+			throw new ModeloException("Usuario FechaNacimiento: Formato de fecha de nacimiento no válido");
 		}
 	}
 
 	/**
 	 * Metodo que comprueba si una fecha de nacimiento es valida
-	 * @param fechaNacimiento
+	 * @param fechaNacimiento - Fecha de nacimiento del usuario
 	 * @return true si es valida
 	 */
 	private boolean fechaNacimientoValida(Fecha fechaNacimiento) {
@@ -274,7 +281,7 @@ public class Usuario {
 
 	/**
 	 * Metodo get que obtiene el objeto fecha de alta
-	 * @return fechaAlta
+	 * @return fechaAlta - Fecha de alta del usuario en nuestro programa.
 	 */
 	public Fecha getFechaAlta() {
 		return fechaAlta;
@@ -282,21 +289,23 @@ public class Usuario {
 
 	/**
 	 * Metodo set que establece un objeto fecha de alta dado por parametro
-	 * @param fechaAlta
+	 * @param fechaAlta - Fecha de alta del usuario en nuestro programa.
+	 * @throws ModeloException 
 	 */
-	public void setFechaAlta(Fecha fechaAlta) {
+	public void setFechaAlta(Fecha fechaAlta) throws ModeloException {
 		assert fechaAlta != null;
+		
 		if (fechaAltaValida(fechaAlta)) {
 			this.fechaAlta = fechaAlta;
 		}
-		if (this.fechaAlta == null) {
-			this.fechaAlta = new Usuario().fechaAlta;
+		else {
+			throw new ModeloException("Usuario FechaAlta: Formato de fecha de alta no válido");
 		}
 	}
 
 	/**
 	 * Metodo que comprueba si una fecha de alta es valida o no
-	 * @param fechaAlta
+	 * @param fechaAlta - Fecha de alta del usuario en nuestro programa.
 	 * @return true, si la fecha de alta es valida
 	 */
 	private boolean fechaAltaValida(Fecha fechaAlta) {
@@ -304,8 +313,8 @@ public class Usuario {
 	}
 
 	/**
-	 * Metodo get que obtiene el objeto clave de acceso que se le asigna al usuario
-	 * @return claveAcceso
+	 * Metodo get que obtiene el objeto clave de acceso del usuario
+	 * @return claveAcceso - Clave de acceso de usuario
 	 */
 	public ClaveAcceso getClaveAcceso() {
 		return claveAcceso;
@@ -313,7 +322,7 @@ public class Usuario {
 
 	/**
 	 * Metodo set que establece la clave de acceso pasada por parametro
-	 * @param claveAcceso
+	 * @param claveAcceso - Clave de acceso de usuario
 	 */
 	public void setClaveAcceso(ClaveAcceso claveAcceso) {
 		assert claveAcceso != null;
@@ -322,7 +331,7 @@ public class Usuario {
 
 	/**
 	 * Metodo get que obtiene el rol del usuario
-	 * @return rol del usuario dentro de nuestra aplicacion
+	 * @return rol - rol del usuario dentro de nuestra aplicacion
 	 */
 	public RolUsuario getRol() {
 		return rol;
@@ -330,7 +339,7 @@ public class Usuario {
 
 	/**
 	 * Metodo set que establece el rol de nuestro usuario pasado por parametro
-	 * @param rol
+	 * @param rol - Rol del usuario
 	 */
 	public void setRol(RolUsuario rol) {
 		assert rol != null;

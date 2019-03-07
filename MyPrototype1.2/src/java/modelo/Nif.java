@@ -15,17 +15,19 @@ public class Nif {
 
 	/**
 	 * Constructor convencional de la clase Nif
-	 * @param texto
+	 * @param texto - Cadena de texto que que contiene el DNI del usuario
+	 * @throws ModeloException 
 	 */
-	public Nif(String texto) {
+	public Nif(String texto) throws ModeloException {
 		setNif(texto);
 	}
 
 	/**
 	 * Constructor por defecto de la clase
+	 * @throws ModeloException 
 	 */
-	public Nif() {
-		this.texto = "00000001R";
+	public Nif() throws ModeloException {
+		setNif("00000001R");
 	}
 
 	/**
@@ -38,7 +40,7 @@ public class Nif {
 
 	/**
 	 * Metodo get que obtiene la cadena de texto que forma el DNI
-	 * @return texto
+	 * @return texto - Cadena de texto que que contiene el DNI del usuario
 	 */
 	public String getNifTexto() {
 		return texto;
@@ -46,22 +48,23 @@ public class Nif {
 
 	/**
 	 * Metodo set que establece el NIF pasada la cadena de texto que lo contiene por parametro
-	 * @param texto
+	 * @param texto - Cadena de texto que que contiene el DNI del usuario
+	 * @throws ModeloException 
 	 */
-	public void setNif(String texto) {
+	public void setNif(String texto) throws ModeloException {
 		assert texto != null;
+		
 		if (nifValido(texto)) {
 			this.texto = texto;
 		}
-		
-		if (this.texto == null) {
-			this.texto = nifGenerado(texto);
+		 else {
+			throw new ModeloException("Nif: Formato no válido");
 		}
 	}
 
 	/**
 	 * Metodo que valida si un NIF es valido o no
-	 * @param texto
+	 * @param texto - Cadena de texto que que contiene el DNI del usuario
 	 * @return true, si el nif es valido
 	 */
 	private boolean nifValido(String texto) {
@@ -79,26 +82,26 @@ public class Nif {
 		return texto.substring(8,9).equals(String.valueOf(letrasDNI.charAt(total)));
 	}
 	
-	/**
-	 * Metodo que ante un nif que no tiene la letra que le corresponde genera otro con la letra correspondiente original
-	 * @param texto
-	 * @return nifGenerado
-	 */
-	private String nifGenerado(String texto) {
-		String numeros = texto.substring(0 ,8);
-		StringBuilder sb = new StringBuilder(numeros);
-		String letrasDNI = "TRWAGMYFPDXBNJZSQVHLCKE";
-		int suma = 0;
-		int total = 0;
-				
-		for (int i = 0; i < numeros.length(); i ++) {
-			suma += Character.getNumericValue(numeros.charAt(i));
-		}
-		
-		total = suma % 23;
-		sb.append(letrasDNI.charAt(total));
-		return sb.toString();
-	}
+//	/**
+//	 * Metodo que ante un nif que no tiene la letra que le corresponde genera otro con la letra correspondiente original
+//	 * @param texto
+//	 * @return nifGenerado
+//	 */
+//	private String nifGenerado(String texto) {
+//		String numeros = texto.substring(0 ,8);
+//		StringBuilder sb = new StringBuilder(numeros);
+//		String letrasDNI = "TRWAGMYFPDXBNJZSQVHLCKE";
+//		int suma = 0;
+//		int total = 0;
+//				
+//		for (int i = 0; i < numeros.length(); i ++) {
+//			suma += Character.getNumericValue(numeros.charAt(i));
+//		}
+//		
+//		total = suma % 23;
+//		sb.append(letrasDNI.charAt(total));
+//		return sb.toString();
+//	}
 
 	/**
 	 * Redefinicion del metodo hashCode de la clase object

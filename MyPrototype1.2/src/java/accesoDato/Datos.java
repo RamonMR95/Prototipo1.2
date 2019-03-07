@@ -89,9 +89,9 @@ public class Datos {
 	}
 
 	/**
-	 * 
-	 * @param idUsr
-	 * @return
+	 * Metodo que busca
+	 * @param idUsr - id del usuario
+	 * @return Usuario
 	 */
 	public Usuario buscarUsuario(String idUsr) {
 		assert idUsr != null;
@@ -110,10 +110,10 @@ public class Datos {
 
 	/**
 	 * Metodo que registra el usuario en el almacen de usuarios
-	 * @param usr
+	 * @param usr - Usuario en sesion
 	 * @throws Exception 
 	 */
-	public void altaUsuario(Usuario usr) throws Exception {
+	public void altaUsuario(Usuario usr) throws DatosException {
 		assert usr != null;
 		int posicionInsercion = indexSortUsuario(usr.getIdUsr());
 
@@ -137,11 +137,12 @@ public class Datos {
 				} while (intentos > 0 && posicionInsercion < 0);
 
 				if (intentos == 0) {
-					throw new Exception("Error imposible generar variante");
+					throw new DatosException("Error imposible generar variante");
 				}
 
-			} else {
-				throw new Exception("Error usr repetido");
+			} 
+			 else {
+				throw new DatosException("Error usr repetido");
 			}
 
 		}
@@ -154,21 +155,16 @@ public class Datos {
 	public void cargarUsuariosPrueba() {
 		for (int i = 0; i < 10; i++) {
 			try {
-				try {
-					altaUsuario(new Usuario(new Nif("0000000" + i + "K"), "Pepe", "López Pérez",
-							new DireccionPostal("C/ Luna", "2" + i, "3013" + i, "Murcia"),
-							new Correo("pepe" + i + "@gmail.com"), new Fecha(1999, 11, 12), new Fecha(2018, 01, 03),
-							new ClaveAcceso("Miau#" + i), RolUsuario.NORMAL));
-
-				} catch (ModeloException e) {
-					
-				}
-
-			} catch (Exception e) {
+				altaUsuario(new Usuario(new Nif("0000000" + i + "K"), "Pepe", "López Pérez",
+						new DireccionPostal("C/ Luna", "2" + i, "3013" + i, "Murcia"),
+						new Correo("pepe" + i + "@gmail.com"), new Fecha(1999, 11, 12), new Fecha(2018, 01, 03),
+						new ClaveAcceso("Miau#" + i), RolUsuario.NORMAL));
+				
+			} catch (DatosException | ModeloException e) {
 
 			}
-
 		}
+
 	}
 
 	// SESIONES
@@ -329,9 +325,9 @@ public class Datos {
 	/**
 	 * Metodo que inserta en el arraylist de mundos de forma binaria un nuevo mundo
 	 * @param mundo - mundo que va a ser dado de alta
-	 * @throws Exception
+	 * @throws DatosException
 	 */
-	public void altaMundo(Mundo mundo) throws Exception {
+	public void altaMundo(Mundo mundo) throws DatosException {
 		assert mundo != null;
 		int posicionInsercion = indexSortMundo(mundo.getId());
 
@@ -339,7 +335,7 @@ public class Datos {
 			datosMundos.add(-posicionInsercion - 1, mundo);
 
 		} else {
-			throw new Exception("Error: nombre repetido");
+			throw new DatosException("Error: nombre repetido");
 			
 		}
 
@@ -347,9 +343,9 @@ public class Datos {
 
 	/**
 	 * Carga datos demo en la matriz que representa el mundo.
-	 * @throws Exception 
+	 * @throws DatosException 
 	 */
-	public void cargarMundoDemo() throws Exception {
+	public void cargarMundoDemo() throws DatosException {
 		Mundo mundo = new Mundo();
 		mundo.setEspacio(new byte[][]
 			  { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },

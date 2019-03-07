@@ -15,23 +15,26 @@ public class Correo {
 
 	/**
 	 * Constructor convencional de la clase Correo
-	 * @param texto
+	 * @param texto - Cadena de caracteres que forma el nombre del correo
+	 * @throws ModeloException 
 	 */
-	public Correo(String texto) {
+	public Correo(String texto) throws ModeloException {
 		setCorreo(texto);
 	}
 
 	/**
 	 * Constructor por defecto de la clase que le da un valor por defecto a nuestro
 	 * correo
+	 * @throws ModeloException 
 	 */
-	public Correo() {
-		this.texto = "correo@correo.es";
+	public Correo() throws ModeloException {
+		setCorreo("correo@correo.es");
+		
 	}
 
 	/**
 	 * Constructor de copia de la clase
-	 * @param correo
+	 * @param correo - Cadena de caracteres que forma el nombre del correo
 	 */
 	public Correo(Correo correo) {
 		this.texto = new String(correo.texto);
@@ -39,7 +42,7 @@ public class Correo {
 
 	/**
 	 * Metodo get que obtiene el texto que forma el correo del usuario
-	 * @return texto
+	 * @return texto - Cadena de caracteres que forma el nombre del correo
 	 */
 	public String getCorreoTexto() {
 		return texto;
@@ -47,23 +50,24 @@ public class Correo {
 
 	/**
 	 * Metodo set que establece el texto que forma el correo del usuario
-	 * @param texto
+	 * @param texto - Cadena de caracteres que forma el nombre del correo
+	 * @throws ModeloException 
 	 */
-	public void setCorreo(String texto) {
-		assert texto != null;
+	public void setCorreo(String texto) throws ModeloException {
+		assert texto != null; 
+		
 		if (correoValido(texto)) {
 			this.texto = texto;
 		}
-
-		if (this.texto == null) {
-			this.texto = new Correo().texto;
-
+		 else {
+			throw new ModeloException("Correo : Formato no válido");
 		}
+
 	}
 
 	/**
 	 * Metodo que comprueba si un correo es valido o no
-	 * @param texto
+	 * @param texto - Cadena de caracteres que forma el nombre del correo
 	 * @return true, si el correo es valido
 	 */
 	private boolean correoValido(String texto) {

@@ -18,7 +18,7 @@ public class SesionUsuario {
 
 	/**
 	 * Constructor convencional. Utiliza métodos set...()
-	 * @param usr
+	 * @param usr - usr en sesion
 	 * @param fecha
 	 */
 	public SesionUsuario(Usuario usr, Fecha fecha) {
@@ -28,8 +28,9 @@ public class SesionUsuario {
 
 	/**
 	 * Constructor por defecto. Utiliza constructor convencional.
+	 * @throws ModeloException 
 	 */
-	public SesionUsuario() {
+	public SesionUsuario() throws ModeloException {
 		this(new Usuario(), new Fecha());
 	}
 
@@ -44,7 +45,7 @@ public class SesionUsuario {
 
 	/**
 	 * Metodo get que obtiene el usuario que inicia sesion
-	 * @return usr
+	 * @return usr - usr en sesion
 	 */
 	public Usuario getUsr() {
 		return usr;
@@ -52,7 +53,7 @@ public class SesionUsuario {
 
 	/**
 	 * Metodo set que establece el usuario que va a iniciar sesion
-	 * @param usr
+	 * @param usr - usr en sesion
 	 */
 	public void setUsr(Usuario usr) {
 		assert usr != null;
@@ -78,7 +79,7 @@ public class SesionUsuario {
 
 	/**
 	 * Metodo que genera un id de sesion cuando un usuario inicia sesion
-	 * @return idSesion
+	 * @return idSesion - id de la sesión iniciada
 	 */
 	public String getIdSesion() {
 		StringBuilder sb = new StringBuilder();
