@@ -81,21 +81,13 @@ public class Usuario {
 		this.fechaAlta = new Fecha(usr.fechaAlta.getYear(), usr.fechaAlta.getMonth(), usr.fechaAlta.getDay());
 		this.claveAcceso = new ClaveAcceso(usr.claveAcceso);
 		this.rol = usr.rol;
-	}
-
-	/**
-	 * Constructor copia especial para poder modificar el idUsr.
-	 * @param usr
-	 * @param id
-	 */
-	public Usuario(Usuario usr, String idUsr) {
-		this(usr);
-		this.generarVarianteIdUsr();
+		generarVarianteIdUsr();
+		
 	}
 	
 	/**
 	 * Metodo de get que obtiene el objeto nif de la clase Nif
-	 * @return nif
+	 * @return nif - Nif de usuario
 	 */
 	public Nif getNif() {
 		return nif;
@@ -103,7 +95,7 @@ public class Usuario {
 
 	/**
 	 * Metodo set que establece un objeto Nif dado por parametro
-	 * @param nif
+	 * @param nif - Nif de usuario
 	 */
 	public void setNif(Nif nif) {
 		assert nif != null;
@@ -112,7 +104,7 @@ public class Usuario {
 
 	/**
 	 * Metodo get que obtiene el nombre del usuario en forma de cadena de texto
-	 * @return nombre
+	 * @return nombre - Nombre del usuario
 	 */
 	public String getNombre() {
 		return nombre;
@@ -120,7 +112,7 @@ public class Usuario {
 
 	/**
 	 * Metodo set que establece un nombre de usuario dado por parametro
-	 * @param nombre
+	 * @param nombre - Nombre del usuario
 	 * @throws ModeloException 
 	 */
 	public void setNombre(String nombre) throws ModeloException {
@@ -136,7 +128,7 @@ public class Usuario {
 
 	/**
 	 * Metodo que comprueba la validez de un nombre.
-	 * @param nombre.
+	 * @param nombre - Nombre del usuario
 	 * @return true si cumple.
 	 */
 	private boolean nombreValido(String nombre) {
@@ -145,7 +137,7 @@ public class Usuario {
 
 	/**
 	 * Metodo get que obtiene los apellidos en forma de cadena de texto
-	 * @return apellidos
+	 * @return apellidos - Apellidos del usuarios
 	 */
 	public String getApellidos() {
 		return apellidos;
@@ -153,7 +145,7 @@ public class Usuario {
 
 	/**
 	 * Metodo set que establece los apellidos de un usuario dado por parametro
-	 * @param apellidos
+	 * @param apellidos - Apellidos del usuarios
 	 * @throws ModeloException 
 	 */
 	public void setApellidos(String apellidos) throws ModeloException {
@@ -170,7 +162,7 @@ public class Usuario {
 
 	/**
 	 * Comprueba validez de los apellidos.
-	 * @param apellidos.
+	 * @param apellidos - Apellidos del usuarios
 	 * @return true si cumple.
 	 */
 	private boolean apellidosValidos(String apellidos) {
@@ -179,7 +171,7 @@ public class Usuario {
 	
 	/**
 	 * Devuelve el id del usuario
-	 * @return isUsr
+	 * @return isUsr - id del usuario
 	 */
 	public String getIdUsr() {
 		return idUsr;
@@ -187,8 +179,8 @@ public class Usuario {
 
 	/**
 	 * Metodo que genera un ID de usuario
-	 * @param idUsr
-	 * @return id
+	 * @param idUsr - id del usuario
+	 * @return id - id de usuario generado por el programa
 	 */
 	private String generarIdUsr() {
 		StringBuilder id = new StringBuilder();
@@ -202,7 +194,8 @@ public class Usuario {
 	}
 
 	/**
-	 * 
+	 * Metodo que genera una variante de idUsr para utilizarlo en caso 
+	 * de repetición de idUsr en nuestra base de datos
 	 */
 	private void generarVarianteIdUsr() {
 		String alfabetoNif = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -212,7 +205,7 @@ public class Usuario {
 
 	/**
 	 * Metodo get que obtiene el objeto direccionpostal
-	 * @return direccionPostal
+	 * @return direccionPostal - Direccion postal del usuario
 	 */
 	public DireccionPostal getDireccionPostal() {
 		return direccionPostal;
@@ -220,7 +213,7 @@ public class Usuario {
 
 	/**
 	 * Metodo set que establece la direccion postal de un usuario dada por parametro
-	 * @param direccionPostal
+	 * @param direccionPostal - Direccion postal del usuario
 	 */
 	public void setDireccionPostal(DireccionPostal direccionPostal) {
 		assert direccionPostal != null;

@@ -26,7 +26,7 @@ public class Datos {
 	private static ArrayList<Mundo> datosMundos = new ArrayList<Mundo>();
 
 	// USUARIO
-	
+
 	/**
 	 * @param clave Key del mapa de equivalencias entre NIF, correo e idUsr
 	 * @return El valor que le corresponde a dicha clave
@@ -52,6 +52,11 @@ public class Datos {
 		}
 	}
 
+	/**
+	 * Metodo que registra las equivalencias para poder acceder al programa con el nif,
+	 * correo e identificador de usuario
+	 * @param usr - Usuario a registrar en el mapa de equivalencias
+	 */
 	private void registrarEquivalenciasId(Usuario usr) {
 		mapaEquivalencias.put(usr.getNif().getNifTexto(), usr.getIdUsr());
 		mapaEquivalencias.put(usr.getCorreo().getCorreoTexto(), usr.getIdUsr());
@@ -79,7 +84,6 @@ public class Datos {
 
 			if (comparacion > 0) {
 				limiteInferior = puntoMedio + 1;
-
 			} else {
 				limiteSuperior = puntoMedio - 1;
 			}
@@ -89,9 +93,9 @@ public class Datos {
 	}
 
 	/**
-	 * Metodo que busca
+	 * Metodo que busca el usuario en el array de usuarios
 	 * @param idUsr - id del usuario
-	 * @return Usuario
+	 * @return Usuario si lo encuentra o null si no
 	 */
 	public Usuario buscarUsuario(String idUsr) {
 		assert idUsr != null;
@@ -101,7 +105,7 @@ public class Datos {
 			int indice = indexSortUsuario(idUsr) - 1;
 
 			if (indice >= 0) {
-				return datosUsuarios.get(indexSortUsuario(idUsr) - 1);
+				return datosUsuarios.get(indice);
 			}
 		}
 		return null;
@@ -118,33 +122,43 @@ public class Datos {
 		int posicionInsercion = indexSortUsuario(usr.getIdUsr());
 
 		if (posicionInsercion < 0) {
-			datosUsuarios.add(-posicionInsercion - 1, usr);
+			datosUsuarios.add(Math.abs(posicionInsercion - 1), usr);
 			registrarEquivalenciasId(usr);
-
 		} else {
-
 			if (!datosUsuarios.get(posicionInsercion - 1).equals(usr)) {
-				int intentos = "BCDEFGHIJKLMNOPQRSTUVWXYZA".length() - 1;
-
-				do {
-					/* Coincidencia de ig generar variante */
-					posicionInsercion = indexSortUsuario(usr.getIdUsr());
-					usr = new Usuario(usr, usr.getIdUsr());
-					datosUsuarios.add(-posicionInsercion, usr);
-					registrarEquivalenciasId(usr);
-					intentos--;
-
-				} while (intentos > 0 && posicionInsercion < 0);
-
-				if (intentos == 0) {
-					throw new DatosException("Error imposible generar variante");
-				}
-
-			} 
-			 else {
+				producirVarianteIdUsr(usr);
+			} else {
 				throw new DatosException("Error usr repetido");
 			}
 
+		}
+	}
+
+	/**
+	 * Metodo que produce un idUsr diferente en caso de coincidencia
+	 * @param usr - Usuario en sesion
+	 * @throws DatosException
+	 */
+	private void producirVarianteIdUsr(Usuario usr) throws DatosException {
+		int posicionInsercion;
+		int intentos = "BCDEFGHIJKLMNOPQRSTUVWXYZA".length() - 1;
+
+		do {
+			/* Coincidencia de ig generar variante */
+			usr = new Usuario(usr);
+			posicionInsercion = indexSortUsuario(usr.getIdUsr());
+
+			if (posicionInsercion < 0) {
+				datosUsuarios.add(-posicionInsercion, usr);
+				registrarEquivalenciasId(usr);
+				return;
+			}
+			intentos--;
+
+		} while (intentos > 0);
+
+		if (intentos == 0) {
+			throw new DatosException("Error imposible generar variante");
 		}
 	}
 
@@ -155,11 +169,11 @@ public class Datos {
 	public void cargarUsuariosPrueba() {
 		for (int i = 0; i < 10; i++) {
 			try {
-				altaUsuario(new Usuario(new Nif("0000000" + i + "K"), "Pepe", "López Pérez",
-						new DireccionPostal("C/ Luna", "2" + i, "3013" + i, "Murcia"),
+				altaUsuario(new Usuario(new Nif("0000000" + i + "TRWAGMYFPDXBNJZSQVHLCKE".charAt(i)), "Pepe",
+						"López Pérez", new DireccionPostal("C/ Luna", "2" + i, "3013" + i, "Murcia"),
 						new Correo("pepe" + i + "@gmail.com"), new Fecha(1999, 11, 12), new Fecha(2018, 01, 03),
 						new ClaveAcceso("Miau#" + i), RolUsuario.NORMAL));
-				
+
 			} catch (DatosException | ModeloException e) {
 
 			}
@@ -168,7 +182,7 @@ public class Datos {
 	}
 
 	// SESIONES
-	
+
 	/**
 	 * Metodo get que obtiene el numero de sesiones registradas.
 	 * @return Numero de sesionesRegistradas
@@ -179,20 +193,75 @@ public class Datos {
 
 	/**
 	 * Metodo que registra la sesion en el almacen de sesiones del programa.
-	 * @param sesion
+	 * @param sesion - Sesión a añadir al array de sesiones
+	 * @throws DatosException 
 	 */
-	public void altaSesion(SesionUsuario sesion) {
-		datosSesiones.add(sesion);
+	public void altaSesion(SesionUsuario sesion) throws DatosException {
+		assert sesion != null;
+		int posicionInsercion = indexSortSesiones(sesion.getIdSesion());
+
+		if (posicionInsercion < 0) {
+			datosSesiones.add(Math.abs(posicionInsercion - 1), sesion);
+		} else {
+			throw new DatosException("Alta Sesion: ya existe");
+		}
 
 	}
 
-	
-	// SIMULACIONES
-	
 	/**
-	 * 
-	 * @param idSimulacion
-	 * @return
+	 * Metodo que busca una sesion del array de sesiones
+	 * @param sesion - Sesion a buscar
+	 * @return Sesion si la encuentra, null si no
+	 */
+	public SesionUsuario buscarSesion(String sesion) {
+		assert sesion != null;
+		sesion = mapaEquivalencias.get(sesion);
+
+		if (sesion != null) {
+			int indice = indexSortUsuario(sesion) - 1;
+
+			if (indice >= 0) {
+				return datosSesiones.get(indice);
+			}
+		}
+		return null;
+
+	}
+
+	/**
+	 * Metodo de inserción binaria de sesiones
+	 * @param idSesion - id de la sesion a insertar en el array de sesiones de usuario
+	 * @return Indice a insertar
+	 */
+	private int indexSortSesiones(String idSesion) {
+		int size = datosSesiones.size();
+		int puntoMedio;
+		int limiteInferior = 0;
+		int limiteSuperior = size - 1;
+
+		while (limiteInferior <= limiteSuperior) {
+			puntoMedio = (limiteSuperior + limiteInferior) / 2;
+			int comparacion = idSesion.compareTo(datosSesiones.get(puntoMedio).getIdSesion());
+
+			if (comparacion == 0) {
+				return puntoMedio + 1;
+			}
+
+			if (comparacion > 0) {
+				limiteInferior = puntoMedio + 1;
+			} else {
+				limiteSuperior = puntoMedio - 1;
+			}
+		}
+		return -(limiteInferior + 1);
+	}
+
+	// SIMULACIONES
+
+	/**
+	 * Metodo que busca una simulacion en el array de simulaciones
+	 * @param idSimulacion - Identificador de simulacion
+	 * @return simulación si la encuentra o null si no la encuentra.
 	 */
 	public Simulacion buscarSimulacion(String idSimulacion) {
 		for (Simulacion simulacion : datosSimulaciones) {
@@ -202,13 +271,51 @@ public class Datos {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Metodo que registra la simulacion en el almacen de simulaciones
-	 * @param simulacion
+	 * @param simulacion - Simulacion a dar de alta
+	 * @throws DatosException 
 	 */
-	public void altaSimulacion(Simulacion simulacion) {
-		datosSimulaciones.add(simulacion);
+	public void altaSimulacion(Simulacion simulacion) throws DatosException {
+		assert simulacion != null;
+		int posicionInsercion = indexSortSimulacion(simulacion.getIdSimulacion());
+
+		if (posicionInsercion < 0) {
+			datosSimulaciones.add(Math.abs(posicionInsercion - 1), simulacion);
+
+		} else {
+			throw new DatosException("Alta Simulacion: ya existe");
+		}
+
+	}
+
+	/**
+	 * Metodo que inserta en el array de simulaciones
+	 * @param idSimulacion - id de la simulacion a insertar
+	 * @return posicion en la que insertar la simulacion
+	 */
+	private int indexSortSimulacion(String idSimulacion) {
+		int size = datosSimulaciones.size();
+		int puntoMedio;
+		int limiteInferior = 0;
+		int limiteSuperior = size - 1;
+
+		while (limiteInferior <= limiteSuperior) {
+			puntoMedio = (limiteSuperior + limiteInferior) / 2;
+			int comparacion = idSimulacion.compareTo(datosSimulaciones.get(puntoMedio).getIdSimulacion());
+
+			if (comparacion == 0) {
+				return puntoMedio + 1;
+			}
+
+			if (comparacion > 0) {
+				limiteInferior = puntoMedio + 1;
+			} else {
+				limiteSuperior = puntoMedio - 1;
+			}
+		}
+		return -(limiteInferior + 1);
 	}
 
 	/**
@@ -221,7 +328,7 @@ public class Datos {
 
 	/**
 	 * Metodo que realiza un volcado con los datos de los usuarios.
-	 * @return String volcadoUsuarios
+	 * @return String volcadoUsuarios -
 	 */
 	public static String volcarDatosUsuariosTexto() {
 		StringBuilder sb = new StringBuilder();
@@ -267,9 +374,9 @@ public class Datos {
 		}
 		return sb.toString();
 	}
-	
+
 	// MUNDO
-	
+
 	/**
 	 * Metodo get que obtiene el numero de mundos registrados
 	 * que coincide con el tamaño del arraylist datosMundos
@@ -278,11 +385,11 @@ public class Datos {
 	public int getMundosRegistrados() {
 		return datosMundos.size();
 	}
-	
+
 	/**
-	 * 
-	 * @param id
-	 * @return
+	 * Metodo que busca un mundo en el array de mundos
+	 * @param id - id del mundo a buscar
+	 * @return El mundo a buscar o null si no lo encuentra
 	 */
 	public Mundo buscarMundo(String id) {
 		for (Mundo mundo : datosMundos) {
@@ -292,6 +399,7 @@ public class Datos {
 		}
 		return null;
 	}
+
 	/**
 	 * Busca usuario dado su nif.
 	 * @param idUsr - el nif del Usuario a buscar.
@@ -313,7 +421,6 @@ public class Datos {
 
 			if (comparacion > 0) {
 				limiteInferior = puntoMedio + 1;
-
 			} else {
 				limiteSuperior = puntoMedio - 1;
 			}
@@ -332,11 +439,10 @@ public class Datos {
 		int posicionInsercion = indexSortMundo(mundo.getId());
 
 		if (posicionInsercion < 0) {
-			datosMundos.add(-posicionInsercion - 1, mundo);
-
+			datosMundos.add(Math.abs(posicionInsercion - 1), mundo);
 		} else {
-			throw new DatosException("Error: nombre repetido");
-			
+			throw new DatosException("Error Mundo: nombre repetido");
+
 		}
 
 	}

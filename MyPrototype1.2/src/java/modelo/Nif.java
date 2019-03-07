@@ -27,7 +27,7 @@ public class Nif {
 	 * @throws ModeloException 
 	 */
 	public Nif() throws ModeloException {
-		setNif("00000001R");
+		setNif("00000000T");
 	}
 
 	/**

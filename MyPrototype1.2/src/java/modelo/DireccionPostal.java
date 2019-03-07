@@ -81,7 +81,7 @@ public class DireccionPostal {
 	 * @return true, si es una calle valida.
 	 */
 	private boolean calleValida(String calle) {
-		return calle.matches("\\w+|\\/");
+		return calle.matches("[A-ZÑÁÉÍÓÚa-zñáéíóú\\/ ]+");
 	}
 
 	/**

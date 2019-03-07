@@ -39,17 +39,22 @@ public class SimulacionTest {
 	@BeforeAll
 	public static void iniciarlizarDatosFijos() {
 		// Objetos no modicados en las pruebas.
-		usr = new Usuario(new Nif("00000001T"), 
-				"Luis", "Roca Mora",
-				new DireccionPostal("Roncal", "10", "30130", "Murcia"), 
-				new Correo("luis@gmail.com"), 
-				new Fecha(2000, 03, 21),
-				new Fecha(2018,10,17), 
-				new ClaveAcceso("Miau#12"), 
-				RolUsuario.NORMAL);
-		fecha = new Fecha(2018, 10, 20, 10, 35, 2);
-		mundo = new Mundo();
-		simulacion1 = new Simulacion(usr, fecha, mundo);
+		try {
+			usr = new Usuario(new Nif("00000001T"), 
+					"Luis", "Roca Mora",
+					new DireccionPostal("Roncal", "10", "30130", "Murcia"), 
+					new Correo("luis@gmail.com"),
+					new Fecha(2000, 03, 21), 
+					new Fecha(2018, 10, 17), 
+					new ClaveAcceso("Miau#12"), 
+					RolUsuario.NORMAL);
+					fecha = new Fecha(2018, 10, 20, 10, 35, 2);
+					mundo = new Mundo();
+					simulacion1 = new Simulacion(usr, fecha, mundo);
+
+		} catch (ModeloException e) {
+
+		}
 	}
 
 	@AfterAll
@@ -59,7 +64,12 @@ public class SimulacionTest {
 
 	@BeforeEach
 	public void iniciarlizarDatosVariables() {	
-		simulacion2 = new Simulacion();
+		try {
+			simulacion2 = new Simulacion();
+			
+		} catch (ModeloException e) {
+
+		}
 	}
 
 
@@ -73,11 +83,16 @@ public class SimulacionTest {
 
 	@Test
 	public void testSimulacionDefecto() {
-		assertEquals(simulacion2.getUsr().getNif(), new Usuario().getNif());
-		assertEquals(simulacion2.getFecha().getYear(), new Fecha().getYear());
-		assertEquals(simulacion2.getFecha().getMonth(), new Fecha().getMonth());
-		assertEquals(simulacion2.getFecha().getDay(), new Fecha().getDay());
-		assertNotNull(simulacion2.getMundo());
+		try {
+			assertEquals(simulacion2.getUsr().getNif(), new Usuario().getNif());
+			assertEquals(simulacion2.getFecha().getYear(), new Fecha().getYear());
+			assertEquals(simulacion2.getFecha().getMonth(), new Fecha().getMonth());
+			assertEquals(simulacion2.getFecha().getDay(), new Fecha().getDay());
+			assertNotNull(simulacion2.getMundo());
+
+		} catch (ModeloException e) {
+
+		}
 	}
 
 	@Test

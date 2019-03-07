@@ -28,6 +28,7 @@ public class JVPrincipal {
 	 */
 	static Datos datos;
 	static Presentacion interfazUsr;
+	static SesionUsuario sesion;
 
 	public static void main(String[] args) {
 		
@@ -37,16 +38,12 @@ public class JVPrincipal {
 
 			datos.cargarUsuariosPrueba();
 			datos.mostrarTodosUsuarios();
-
-			try {
-				datos.cargarMundoDemo();
-			} catch (DatosException e) {
-
-			}
+			datos.cargarMundoDemo();
+	
 
 			if (interfazUsr.inicioSesionCorrecto()) {
 
-				SesionUsuario sesion = new SesionUsuario();
+				sesion = new SesionUsuario();
 				sesion.setUsr(interfazUsr.getUsrEnSesion());
 				sesion.setFecha(new Fecha());
 				datos.altaSesion(sesion);
@@ -65,8 +62,8 @@ public class JVPrincipal {
 			}
 			System.out.println("Fin del programa.");
 			
-		} catch (ModeloException e) {
-
+		} catch (ModeloException | DatosException e) {
+			
 		}
 	}
 

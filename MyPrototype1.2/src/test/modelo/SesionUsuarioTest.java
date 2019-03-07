@@ -39,16 +39,16 @@ public class SesionUsuarioTest {
 	@BeforeAll
 	public static void iniciarlizarDatosFijos() {
 		// Objetos no modicados en las pruebas.
-		usr = new Usuario(new Nif("00000001T"), 
-				"Luis", "Roca Mora",
-				new DireccionPostal("Roncal", "10", "30130", "Murcia"), 
-				new Correo("luis@gmail.com"), 
-				new Fecha(2000, 03, 21),
-				new Fecha(2018,10,17), 
-				new ClaveAcceso("Miau#12"), 
-				RolUsuario.NORMAL);
-		fecha = new Fecha(2018, 10, 20, 10, 35, 2);
-		sesion2 = new SesionUsuario(usr, fecha); 
+		try {
+			usr = new Usuario(new Nif("00000000T"), "Luis", "Roca Mora",
+					new DireccionPostal("Roncal", "10", "30130", "Murcia"), new Correo("luis@gmail.com"),
+					new Fecha(2000, 03, 21), new Fecha(2018, 10, 17), new ClaveAcceso("Miau#12"), RolUsuario.NORMAL);
+			fecha = new Fecha(2018, 10, 20, 10, 35, 2);
+			sesion2 = new SesionUsuario(usr, fecha);
+			
+		} catch (ModeloException e) {
+			
+		}
 	}
 
 	/**
@@ -67,7 +67,12 @@ public class SesionUsuarioTest {
 	 */
 	@BeforeEach
 	public void iniciarlizarDatosVariables() {	
-			sesion1 = new SesionUsuario();
+			try {
+				sesion1 = new SesionUsuario();
+				
+			} catch (ModeloException e) {
+
+			}
 	}
 
 	/**

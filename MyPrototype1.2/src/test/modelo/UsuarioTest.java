@@ -36,15 +36,15 @@ public class UsuarioTest {
 	@BeforeAll
 	public static void iniciarlizarDatosFijos() {
 		// Objetos no modicados en las pruebas.
-		usuario1 = new Usuario(new Nif(), 
-				"Luis", "Roca Mora",
-				new DireccionPostal("Roncal", "10", "30130", "Murcia"), 
-				new Correo("luis@gmail.com"), 
-				new Fecha(2000, 03, 21),
-				new Fecha(2018,10,17), 
-				new ClaveAcceso(), 
-				RolUsuario.NORMAL);
+		try {
+			usuario1 = new Usuario(new Nif(), "Luis", "Roca Mora",
+					new DireccionPostal("Roncal", "10", "30130", "Murcia"), new Correo("luis@gmail.com"),
+					new Fecha(2000, 03, 21), new Fecha(2018, 10, 17), new ClaveAcceso(), RolUsuario.NORMAL);
+
+		} catch (ModeloException e) {
+
 		}
+	}
 
 	/**
 	 * Método que se ejecuta una sola vez al final del conjunto pruebas.
@@ -60,7 +60,13 @@ public class UsuarioTest {
 	 */
 	@BeforeEach
 	public void iniciarlizarDatosVariables() {	
-		usuario2 = new Usuario();
+		try {
+			usuario2 = new Usuario();
+			
+		} catch (ModeloException e) {
+
+		}
+	
 	}
 
 	/**
@@ -74,33 +80,45 @@ public class UsuarioTest {
 	// Test's CON DATOS VALIDOS
 	
 	@Test
-	public void testUsuarioConvencional() {	
-		assertEquals(usuario1.getNif(), new Nif("00000001R"));
-		assertEquals(usuario1.getNombre(), "Luis");
-		assertEquals(usuario1.getApellidos(), "Roca Mora");
-		assertEquals(usuario1.getDireccionPostal(), new DireccionPostal("Roncal", "10", "30130", "Murcia"));
-		assertEquals(usuario1.getCorreo(), new Correo("luis@gmail.com"));
-		assertEquals(usuario1.getFechaNacimiento(), new Fecha(2000, 03, 21));
-		assertEquals(usuario1.getFechaAlta(), new Fecha(2018,10,17));
-		assertEquals(usuario1.getClaveAcceso(), new ClaveAcceso("Miau#0"));
-		assertEquals(usuario1.getRol(), RolUsuario.NORMAL);
+	public void testUsuarioConvencional() {
+		try {
+			assertEquals(usuario1.getNif(), new Nif("00000001R"));
+			assertEquals(usuario1.getNombre(), "Luis");
+			assertEquals(usuario1.getApellidos(), "Roca Mora");
+			assertEquals(usuario1.getDireccionPostal(), new DireccionPostal("Roncal", "10", "30130", "Murcia"));
+			assertEquals(usuario1.getCorreo(), new Correo("luis@gmail.com"));
+			assertEquals(usuario1.getFechaNacimiento(), new Fecha(2000, 03, 21));
+			assertEquals(usuario1.getFechaAlta(), new Fecha(2018, 10, 17));
+			assertEquals(usuario1.getClaveAcceso(), new ClaveAcceso("Miau#0"));
+			assertEquals(usuario1.getRol(), RolUsuario.NORMAL);
+
+		} catch (ModeloException e) {
+
+		}
+
 	}
 
 	@Test
 	public void testUsuarioDefecto() {
-		assertEquals(usuario2.getNif(), new Nif("00000001R"));
-		assertEquals(usuario2.getNombre(), "Nombre");
-		assertEquals(usuario2.getApellidos(), "Apellido Apellido");
-		assertEquals(usuario2.getDireccionPostal(),new DireccionPostal("calle", "numero", "CP", "poblacion"));
-		assertEquals(usuario2.getCorreo(), new Correo("correo@correo.es"));
-		assertEquals(usuario2.getFechaNacimiento().getYear(),new Fecha().getYear());
-		assertEquals(usuario2.getFechaNacimiento().getMonth(), new Fecha().getMonth());
-		assertEquals(usuario2.getFechaNacimiento().getDay(), new Fecha().getDay());
-		assertEquals(usuario2.getFechaAlta().getYear(), new Fecha().getYear());
-		assertEquals(usuario2.getFechaAlta().getMonth(), new Fecha().getMonth());
-		assertEquals(usuario2.getFechaAlta().getDay(), new Fecha().getDay());
-		assertEquals(usuario2.getClaveAcceso(), new ClaveAcceso("Miau#0"));
-		assertEquals(usuario2.getRol(), RolUsuario.NORMAL);
+		try {
+			assertEquals(usuario2.getNif(), new Nif("00000001R"));
+			assertEquals(usuario2.getNombre(), "Nombre");
+			assertEquals(usuario2.getApellidos(), "Apellido Apellido");
+			assertEquals(usuario2.getDireccionPostal(),new DireccionPostal("calle", "numero", "CP", "poblacion"));
+			assertEquals(usuario2.getCorreo(), new Correo("correo@correo.es"));
+			assertEquals(usuario2.getFechaNacimiento().getYear(),new Fecha().getYear());
+			assertEquals(usuario2.getFechaNacimiento().getMonth(), new Fecha().getMonth());
+			assertEquals(usuario2.getFechaNacimiento().getDay(), new Fecha().getDay());
+			assertEquals(usuario2.getFechaAlta().getYear(), new Fecha().getYear());
+			assertEquals(usuario2.getFechaAlta().getMonth(), new Fecha().getMonth());
+			assertEquals(usuario2.getFechaAlta().getDay(), new Fecha().getDay());
+			assertEquals(usuario2.getClaveAcceso(), new ClaveAcceso("Miau#0"));
+			assertEquals(usuario2.getRol(), RolUsuario.NORMAL);
+			
+		} catch (Exception e) {
+
+		}
+		
 	}
 
 	@Test
@@ -120,58 +138,103 @@ public class UsuarioTest {
 	
 	@Test
 	public void testUsuarioCopiaEspecialVariarId() {
-		Usuario usuario = new Usuario(usuario1, usuario1.getIdUsr());
+		Usuario usuario = new Usuario(usuario1);
 		assertNotEquals(usuario.getIdUsr(), usuario1.getIdUsr());
 	}
 	
 	@Test
 	public void testSetNif() {
-		usuario2.setNif(new Nif("00000001R"));
-		assertEquals(usuario2.getNif().getNifTexto(), "00000001R");
+		try {
+			usuario2.setNif(new Nif("00000001R"));
+			assertEquals(usuario2.getNif().getNifTexto(), "00000001R");
+
+		} catch (ModeloException e) {
+
+		}
 	}
 	
 	@Test
 	public void testSetNombre() {
-		usuario2.setNombre("Luis");
-		assertEquals(usuario2.getNombre(), "Luis");
+		try {
+			usuario2.setNombre("Luis");
+			assertEquals(usuario2.getNombre(), "Luis");
+			
+		} catch (ModeloException e) {
+
+		}
+
 	}
 	
 	@Test
 	public void testSetApellidos() {
-		usuario2.setApellidos("Roca Mora");
-		assertEquals(usuario2.getApellidos(), "Roca Mora");
+		try {
+			usuario2.setApellidos("Roca Mora");
+			assertEquals(usuario2.getApellidos(), "Roca Mora");
+		} catch (ModeloException e) {
+
+		}
+		
 	}
 	
 	@Test
 	public void testSetDomicilio() {
-		DireccionPostal direccionLocal = new DireccionPostal("Roncal", "10", "30130", "Murcia");
-		usuario2.setDireccionPostal(direccionLocal);
-		assertEquals(usuario2.getDireccionPostal(),direccionLocal);
+		try {
+			DireccionPostal direccionLocal = new DireccionPostal("Roncal", "10", "30130", "Murcia");
+			usuario2.setDireccionPostal(direccionLocal);
+			assertEquals(usuario2.getDireccionPostal(),direccionLocal);
+			
+		} catch (ModeloException e) {
+
+		}
+		
 	}
 	
 	@Test
 	public void testSetCorreo() {
-		Correo correoLocal = new Correo("luis@gmail.com");
-		usuario2.setCorreo(correoLocal);
-		assertEquals(usuario2.getCorreo(),correoLocal);
+		try {
+			Correo correoLocal = new Correo("luis@gmail.com");
+			usuario2.setCorreo(correoLocal);
+			assertEquals(usuario2.getCorreo(),correoLocal);
+			
+		} catch (ModeloException e) {
+
+		}
+
 	}
 	@Test
 	public void testSetFechaNacimiento() {
-		usuario2.setFechaNacimiento(new Fecha(2000, 3, 21));
-		assertEquals(usuario2.getFechaNacimiento(), new Fecha(2000, 3, 21));
+		try {
+			usuario2.setFechaNacimiento(new Fecha(2000, 3, 21));
+			assertEquals(usuario2.getFechaNacimiento(), new Fecha(2000, 3, 21));
+			
+		} catch (ModeloException e) {
+
+		}
+
 	}
 	
 	@Test
 	public void testSetFechaAlta() {
-		usuario2.setFechaAlta(new Fecha(2017,9,17));
-		assertEquals(usuario2.getFechaAlta(), new Fecha(2017,9,17));
+		try {
+			usuario2.setFechaAlta(new Fecha(2017,9,17));
+			assertEquals(usuario2.getFechaAlta(), new Fecha(2017,9,17));
+			
+		} catch (ModeloException e) {
+
+		}
 	}
 
 	@Test
 	public void testSetClaveAcceso() {
-		ClaveAcceso claveLocal = new ClaveAcceso("Miau#12");
-		usuario2.setClaveAcceso(claveLocal);
-		assertEquals(usuario2.getClaveAcceso(), claveLocal);
+		try {
+			ClaveAcceso claveLocal = new ClaveAcceso("Miau#12");
+			usuario2.setClaveAcceso(claveLocal);
+			assertEquals(usuario2.getClaveAcceso(), claveLocal);
+			
+		} catch (ModeloException e) {
+
+		}
+
 	}
 
 	@Test
@@ -236,9 +299,15 @@ public class UsuarioTest {
 	
 	@Test
 	public void testSetNifBlanco() {
+		try {
 			Nif dniBlanco = new Nif("00000000R");
 			usuario2.setNif(new Nif(dniBlanco));	
 			assertEquals(usuario2.getNif(), dniBlanco);
+			
+		} catch (ModeloException e) {
+		
+		}
+
 	}
 	
 	@Test
@@ -247,15 +316,21 @@ public class UsuarioTest {
 			usuario2.setNombre(null);
 			fail("No debe llegar aquí...");
 		} 
-		catch (AssertionError e) { 
+		catch (AssertionError | ModeloException e ) { 
 			assertTrue(usuario2.getNombre() != null);
 		}
 	}
 	
 	@Test
 	public void testSetNombreBlanco() {
+		try {
 			usuario2.setNombre("  ");	
 			assertEquals(usuario2.getNombre(), "Nombre");
+			
+		} catch (ModeloException e) {
+
+		}
+
 	}
 	
 	@Test
@@ -264,15 +339,21 @@ public class UsuarioTest {
 			usuario2.setApellidos(null);
 			fail("No debe llegar aquí...");
 		} 
-		catch (AssertionError e) { 
+		catch (AssertionError |ModeloException e) { 
 			assertTrue(usuario2.getApellidos() != null);
 		}
 	}
 	
 	@Test
 	public void testSetApellidosBlanco() {
+		try {
 			usuario2.setApellidos("  ");	
 			assertEquals(usuario2.getApellidos(), "Apellido Apellido");
+			
+		} catch (ModeloException e) {
+
+		}
+
 	}
 	
 	@Test
@@ -288,9 +369,15 @@ public class UsuarioTest {
 	
 	@Test
 	public void testSetDomicilioBlanco() {
+		try {
 			DireccionPostal domicilioBlanco = new DireccionPostal();
 			usuario2.setDireccionPostal(domicilioBlanco);	
 			assertEquals(usuario2.getDireccionPostal(), domicilioBlanco);
+			
+		} catch (ModeloException e) {
+
+		}
+
 	}
 	
 	@Test
@@ -306,9 +393,15 @@ public class UsuarioTest {
 	
 	@Test
 	public void testSetCorreoBlanco() {
+		try {
 			Correo correoBlanco = new Correo("correo@correo.es");
 			usuario2.setCorreo(new Correo("  "));	
 			assertEquals(usuario2.getCorreo(), correoBlanco);
+			
+		} catch (ModeloException e) {
+
+		}
+
 	}
 	
 	@Test
@@ -317,15 +410,21 @@ public class UsuarioTest {
 			usuario2.setFechaNacimiento(null);
 			fail("No debe llegar aquí...");
 		} 
-		catch (AssertionError e) { 
+		catch (AssertionError | ModeloException e) { 
 			assertTrue(usuario2.getFechaNacimiento() != null);
 		}
 	}
 	
 	@Test
 	public void testSetFechaNacimientoFuturo() {	
+		try {
 			usuario1.setFechaNacimiento(new Fecha(3020, 9, 10));
 			assertEquals(usuario1.getFechaNacimiento(), new Fecha(2000, 3, 21));
+			
+		} catch (ModeloException e) {
+
+		}
+
 	}
 	
 	@Test
@@ -334,15 +433,21 @@ public class UsuarioTest {
 			usuario2.setFechaAlta(null);
 			fail("No debe llegar aquí...");
 		} 
-		catch (AssertionError e) {	
+		catch (AssertionError | ModeloException e) {	
 			assertTrue(usuario2.getFechaAlta() != null);
 		}
 	}
 
 	@Test
 	public void testSetFechaAltaFuturo() {	
+		try {
 			usuario1.setFechaAlta(new Fecha(3020, 9, 10));
 			assertEquals(usuario1.getFechaAlta(), new Fecha(2018, 10, 17));
+			
+		} catch (ModeloException e) {
+
+		}
+
 	}
 	
 	@Test
@@ -358,9 +463,15 @@ public class UsuarioTest {
 
 	@Test
 	public void testSetClaveAccesoBlanco() {
+		try {
 			ClaveAcceso contraseñaBlanca = new ClaveAcceso("Miau#0");
 			usuario2.setClaveAcceso(new ClaveAcceso("  "));	
 			assertEquals(usuario2.getClaveAcceso(), contraseñaBlanca);
+			
+		} catch (ModeloException e) {
+
+		}
+
 	}
 	
 	@Test
